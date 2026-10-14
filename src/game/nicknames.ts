@@ -1,6 +1,7 @@
 // Loto nicknames, family-friendly. Only numbers with a well-known nickname or association have one; the others are
-// announced plainly. Draft list, reviewed by the user before release (docs/NICKNAMES.md, AC-31).
+// announced plainly. List approved by the user on 2026-10-14 (docs/NICKNAMES.md, AC-31).
 export const NICKNAMES: Readonly<Record<number, string>> = {
+  1: 'le petit',
   2: 'le petit canard',
   3: 'les trois petits cochons',
   4: 'les quatre saisons',
@@ -23,6 +24,7 @@ export const NICKNAMES: Readonly<Record<number, string>> = {
   36: 'les trente-six chandelles',
   40: 'la quarantaine',
   44: 'les deux chaises',
+  67: 'six-seven',
   77: 'les deux drapeaux',
   80: 'le tour du monde',
   88: 'les deux bonshommes de neige',
