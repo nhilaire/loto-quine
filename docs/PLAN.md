@@ -7,7 +7,7 @@ Format: `- [ ] T-01 Title (AC-01, AC-02) - proof: unit|e2e|device`. Check the bo
 
 - [x] T-01 Seeded random generator and draw engine: 1-90 without replacement, counter, draw order, last 5, all balls out (AC-03, AC-04, AC-05, AC-11) - proof: unit
 - [x] T-02 Game flow engine: stages, draw lock during animation, pending win, win choice (continue / new draw), carton plein end, stop, duration (AC-06, AC-09, AC-10, AC-33) - proof: unit
-- [ ] T-03 Card check: 3 x 5 entry rules, validation errors, verdict per stage (AC-07, AC-08) - proof: unit
+- [x] T-03 Card check: 3 x 5 entry rules, validation errors, verdict per stage (AC-07, AC-08) - proof: unit
 - [ ] T-04 Tie-break engine: k players, distinct numbers, highest wins, reproducible, main draw untouched (AC-38) - proof: unit
 - [ ] T-05 Game persistence: serialise / restore (incl. pending win), AsyncStorage store, saved at draw time (AC-12) - proof: unit
 - [ ] T-06 French copy (tu) with plural helpers and typography test over fr.ts and nicknames (AC-30, AC-34) - proof: unit
