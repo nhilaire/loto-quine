@@ -11,7 +11,7 @@ Format: `- [ ] T-01 Title (AC-01, AC-02) - proof: unit|e2e|device`. Check the bo
 - [x] T-04 Tie-break engine: k players, distinct numbers, highest wins, reproducible, main draw untouched (AC-38) - proof: unit
 - [x] T-05 Game persistence: serialise / restore (incl. pending win), AsyncStorage store, saved at draw time (AC-12) - proof: unit
 - [x] T-06 French copy (tu) with plural helpers and typography test over fr.ts and nicknames (AC-30, AC-34) - proof: unit
-- [ ] T-07 Nickname data (traditional, family-friendly) and announcement text builder; review sheet for the user (AC-21, AC-23, AC-31) - proof: unit
+- [x] T-07 Nickname data (traditional, family-friendly) and announcement text builder; review sheet for the user (AC-21, AC-23, AC-31) - proof: unit
 - [ ] T-08 Warm theme, glossy ball with roll/reveal animation, 1-90 board, last balls strip (AC-13, AC-32) - proof: unit
 - [ ] T-09 Screens and navigation: Home (new / resume), Game, Check with keypad, Tie-break, Win choice, Game over, Rules, confirmations, Android back, keep awake on Game and Check, resume on cold start (AC-14, AC-15, AC-16, AC-17, AC-18, AC-19, AC-24, AC-36, AC-37, AC-39) - proof: unit
 - [ ] T-10 Settings: voice, nicknames, sounds, vibrations, anonymous statistics, persisted (AC-20) - proof: unit
