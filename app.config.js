@@ -24,6 +24,8 @@ module.exports = ({ config }) => ({
   slug: meta.slug,
   version,
   orientation: config.orientation || 'portrait',
+  // Testing aid: lotoquine://seed/<n> (docs/PRD.md, non-functional requirements).
+  scheme: 'lotoquine',
   android: {
     ...config.android,
     package: meta.package,
