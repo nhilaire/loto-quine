@@ -15,13 +15,13 @@ export function SettingsScreen({ telemetryEnabled, onToggleTelemetry, onBack }: 
       </Text>
       <View style={styles.row}>
         <View style={styles.rowText}>
-          <Text style={styles.label}>{fr.settings.telemetry}</Text>
-          <Text style={styles.help}>{fr.settings.telemetryHelp}</Text>
+          <Text style={styles.label}>{fr.settings.stats}</Text>
+          <Text style={styles.help}>{fr.settings.statsHelp}</Text>
         </View>
         <Switch
           value={telemetryEnabled}
           onValueChange={onToggleTelemetry}
-          accessibilityLabel={fr.settings.telemetry}
+          accessibilityLabel={fr.settings.stats}
           testID="settings-telemetry"
           trackColor={{ true: colors.accent, false: colors.surface }}
         />

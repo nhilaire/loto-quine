@@ -12,16 +12,16 @@ describe('App', () => {
 
   it('asks for consent in French on first launch, then shows the home screen', async () => {
     await render(<App />);
-    expect(await screen.findByText('Votre vie privée')).toBeTruthy();
+    expect(await screen.findByText('Statistiques anonymes')).toBeTruthy();
     await fireEvent.press(screen.getByText('Refuser'));
-    expect(await screen.findByText('Jouer')).toBeTruthy();
+    expect(await screen.findByText('Nouvelle partie')).toBeTruthy();
     expect(screen.getByText(APP_NAME)).toBeTruthy();
   });
 
   it('does not ask again once the player has chosen', async () => {
     await AsyncStorage.setItem('telemetry.consent.v1', 'denied');
     await render(<App />);
-    expect(await screen.findByText('Jouer')).toBeTruthy();
-    expect(screen.queryByText('Votre vie privée')).toBeNull();
+    expect(await screen.findByText('Nouvelle partie')).toBeTruthy();
+    expect(screen.queryByText('Statistiques anonymes')).toBeNull();
   });
 });
