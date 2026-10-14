@@ -14,5 +14,6 @@ Launch check: alive after 10 s, no fatal error
 
 - 2026-10-14, first install (commit 7c3892c): « on a de quoi vérifier un carton, mais il faut pouvoir vérifier une
   quine ou même une double quine, pas qu'un carton ». Entering only the winning rows already worked, but the wording
-  (« Vérifier un carton », 3 empty rows) did not say so. Fix chosen by the user: rename only (AC-40). Not accepted
+  (« Vérifier un carton », 3 empty rows) did not say so. Fix chosen by the user: rename only (AC-40); the Game button
+  is simply « Vérifier », the Check screen title names the stage. Not accepted
   yet: re-verify and reinstall.

@@ -36,6 +36,7 @@ export const fr = {
     draw: 'Tirer une boule',
     lastBalls: 'Dernières boules',
     allOut: 'Toutes les boules sont sorties',
+    check: 'Vérifier',
     end: 'Terminer la partie',
     endConfirm: `Terminer la partie${N}?`,
     replaceConfirm: `Une partie est en cours. En commencer une nouvelle${N}?`,

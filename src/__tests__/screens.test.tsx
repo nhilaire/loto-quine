@@ -115,7 +115,9 @@ describe('screens and navigation', () => {
     await fireEvent.press(screen.getByTestId('win-continue'));
     expect(screen.getByTestId('game-stage')).toHaveTextContent('Double quine');
     expect(screen.getByTestId('game-counter')).toHaveTextContent('Boule n°5');
-    expect(screen.getByText('Vérifier une double quine')).toBeTruthy();
+    expect(screen.getByTestId('game-check')).toHaveTextContent('Vérifier');
+    await fireEvent.press(screen.getByTestId('game-check'));
+    expect(screen.getByTestId('check-title')).toHaveTextContent('Vérifier une double quine');
   });
 
   it('AC-16: a row with an undrawn number is not yet a win, Retour changes nothing', async () => {

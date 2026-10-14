@@ -64,8 +64,7 @@ French pitch: « Ton animateur de loto dans la poche : tire les boules, annonce-
   progress), « Règles », « Paramètres ».
 - **Game**: stage banner (« Quine », « Double quine », « Carton plein »), the big ball (number + nickname line when
   nicknames are on), ball counter « Boule n°{n} », the last 5 balls in draw order, the 1-90 board, button
-  « Tirer une boule » (the ball itself is also tappable), check button named after the stage (« Vérifier une quine »,
-  « Vérifier une double quine », « Vérifier un carton plein »), menu entry
+  « Tirer une boule » (the ball itself is also tappable), button « Vérifier », menu entry
   « Terminer la partie ». The screen stays on while Game or Check is displayed.
 - **Check** (title named after the stage, see AC-40): tells which rows to enter (only the winning ones); a 3 × 5 grid of cells and a
   numeric keypad (0-9, erase, next cell); button « Vérifier »; the result marks each entered number drawn or missing
@@ -342,8 +341,8 @@ phone or emulator, `[manual]` human judgement (kept rare).
 - AC-39 [e2e] Given seed 42 and a winning card on Check, when « Départager les gagnants » is tapped with 2 winners
   and both « Tirer » are tapped, then « Le joueur {k} gagne avec le {n} ! » is shown with the higher number; when
   « Valider le gagnant » is tapped, then the Win choice is shown.
-- AC-40 [unit] Given the stage quine / double quine / carton plein, when Game and Check are shown, then the check button
-  and the Check title read « Vérifier une quine » / « Vérifier une double quine » / « Vérifier un carton plein » and the
+- AC-40 [unit] Given the stage quine / double quine / carton plein, when Game and Check are shown, then the Game button reads « Vérifier » and the Check title
+  reads « Vérifier une quine » / « Vérifier une double quine » / « Vérifier un carton plein » and the
   hint reads « Saisis seulement la ligne gagnante. » / « Saisis seulement les 2 lignes gagnantes. » / « Saisis les 3
   lignes du carton. ».
 - AC-31 [manual] Given the nickname list, when the user reviews it before release, then every nickname is approved
@@ -375,6 +374,7 @@ Tone: tu. French typography: no-break space before « : ; ! ? » and inside « �
 | game.draw | Tirer une boule |
 | game.lastBalls | Dernières boules |
 | game.allOut | Toutes les boules sont sorties |
+| game.check | Vérifier |
 | game.end | Terminer la partie |
 | game.endConfirm | Terminer la partie ? |
 | game.replaceConfirm | Une partie est en cours. En commencer une nouvelle ? |
@@ -432,7 +432,7 @@ n ≥ 2 (French rule).
 
 Amendment 2026-10-14 (phone test, decided by the user): « Vérifier un carton » suggested a full card had to be
 entered. The check is now named after the stage and tells which rows to enter (only the winning ones); the 3-row grid
-is kept (user choice « juste renommer »). New AC-40.
+is kept (user choice « juste renommer »); the Game button is simply « Vérifier » (user request). New AC-40.
 
 ## Out of scope
 
