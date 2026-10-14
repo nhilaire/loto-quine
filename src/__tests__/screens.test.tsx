@@ -4,7 +4,7 @@ import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import { useKeepAwake } from 'expo-keep-awake';
 
 import App from '../App';
-import { setPendingSeed } from '../app/testSeed';
+import { setPendingStart } from '../app/testSeed';
 import { BALL_COUNT, drawBall, emptyDraw } from '../game/draw';
 import { seedFrom } from '../game/random';
 import { tieBreakNumbers, tieBreakWinner } from '../game/tieBreak';
@@ -27,9 +27,9 @@ const SEED = 42;
 const BALLS = sequence(SEED, BALL_COUNT);
 const UNDRAWN_AFTER_5 = BALLS[10];
 
-async function start(consent: 'granted' | 'denied' = 'denied') {
+async function start(consent: 'granted' | 'denied' = 'denied', drawn = 0) {
   await AsyncStorage.setItem('telemetry.consent.v1', consent);
-  setPendingSeed(SEED);
+  setPendingStart({ seed: SEED, drawn });
   const view = await render(<App />);
   await fireEvent.press(await screen.findByTestId('home-new-game'));
   return view;
@@ -186,8 +186,9 @@ describe('screens and navigation', () => {
   });
 
   it('AC-37: after 90 balls drawing is disabled and a card can still be checked', async () => {
-    await start();
-    await drawBalls(BALL_COUNT);
+    await start('denied', 88);
+    expect(screen.getByTestId('game-counter')).toHaveTextContent('Boule n°88');
+    await drawBalls(2);
     expect(screen.getByText('Toutes les boules sont sorties')).toBeTruthy();
     expect(screen.getByTestId('game-draw').props.accessibilityState.disabled).toBe(true);
     await fireEvent.press(screen.getByTestId('game-check'));

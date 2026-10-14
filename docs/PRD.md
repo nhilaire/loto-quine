@@ -247,7 +247,9 @@ Business and technical indicators followed in Firebase (free Spark plan). Detail
   turned on only by consent or the « Statistiques anonymes » toggle.
 - Testing aid: opening the deep link `lotoquine://seed/<n>` (n integer) sets an in-memory seed (not saved, cleared
   when the app is killed) used by the next new game; it works in debug and release builds and opens the normal
-  first screen. All e2e flows use it so draws are reproducible.
+  first screen. All e2e flows use it so draws are reproducible. Amendment 2026-10-14 (build, technical): the link
+  `lotoquine://seed/<n>/drawn/<k>` (k < 90) also starts that game with its first k balls drawn by the engine, so that
+  the 90-balls flow (AC-37) fits in the verification time budget (it took 13 min tapping every ball).
 
 ## Acceptance criteria
 

@@ -9,19 +9,23 @@ tags:
     visible:
       id: "consent-screen"
     timeout: 20000
-- openLink: "lotoquine://seed/42"
+- openLink: "lotoquine://seed/42/drawn/88"
 - tapOn:
     id: "consent-refuse"
 - tapOn:
     id: "home-new-game"
-- assertVisible: "Touche la boule pour commencer"
-- repeat:
-    while:
-      notVisible: "Toutes les boules sont sorties"
-    commands:
-      - tapOn:
-          id: "game-draw"
-          retryTapIfNoChange: false
+- assertVisible: "Boule n°88"
+- tapOn:
+    id: "game-draw"
+- extendedWaitUntil:
+    visible: "Boule n°89"
+    timeout: 5000
+- tapOn:
+    id: "game-draw"
+- extendedWaitUntil:
+    visible: "Boule n°90"
+    timeout: 5000
+- assertVisible: "Toutes les boules sont sorties"
 - assertVisible: "Boule n°90"
 - assertVisible:
     id: "game-draw"

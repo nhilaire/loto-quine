@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, BackHandler, Linking, StyleSheet, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import { parseSeedLink, setPendingSeed, takePendingSeed } from './app/testSeed';
+import { parseSeedLink, setPendingStart, takePendingStart } from './app/testSeed';
 import { onReveal, onRollStart, onTieReveal, onWinValidated, stopAnnouncements } from './audio/feedback';
 import { GameAction, GameState, WinChoice, lastBall, newGame, reduce } from './game/game';
 import { randomSeed, seedFrom } from './game/random';
@@ -68,8 +68,8 @@ export default function App() {
   // Testing aid: lotoquine://seed/<n> (cold start URL or link opened while running).
   useEffect(() => {
     const handle = (url: string | null) => {
-      const seed = parseSeedLink(url);
-      if (seed !== null) setPendingSeed(seed);
+      const start = parseSeedLink(url);
+      if (start !== null) setPendingStart(start);
     };
     void Linking.getInitialURL().then(handle).catch(() => {});
     const sub = Linking.addEventListener('url', ({ url }) => handle(url));
@@ -112,8 +112,11 @@ export default function App() {
     const now = Date.now();
     send(startEvents(gameRef.current, now));
     stopAnnouncements();
-    const seed = takePendingSeed();
-    commit(newGame(seed !== null ? seedFrom(seed) : randomSeed(), now));
+    const test = takePendingStart();
+    let game = newGame(test ? seedFrom(test.seed) : randomSeed(), now);
+    // Testing aid only: pre-drawn balls, without telemetry, sound or animation.
+    for (let i = 0; i < (test?.drawn ?? 0); i++) game = reduce(reduce(game, { type: 'draw' }), { type: 'revealed' });
+    commit(game);
     setFinished(null);
     setConfirm(null);
     setRoute('game');

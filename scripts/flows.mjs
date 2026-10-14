@@ -24,10 +24,10 @@ const shot = (name) => [`- takeScreenshot: ${name}`];
 const waitId = (id) => [`- extendedWaitUntil:`, `    visible:`, `      id: "${id}"`, `    timeout: 20000`];
 
 const fresh = () => [`- launchApp:`, `    clearState: true`, ...waitId('consent-screen')];
-const start = (consent = 'refuse') => [
+const start = (consent = 'refuse', drawn = 0) => [
   ...fresh(),
   // The link must come after the first screen: opened earlier it reaches the app before its listener.
-  `- openLink: "lotoquine://seed/${SEED}"`,
+  `- openLink: "lotoquine://seed/${SEED}${drawn ? `/drawn/${drawn}` : ''}"`,
   ...tap(`consent-${consent}`),
   ...tap('home-new-game'),
   ...see('Touche la boule pour commencer'),
@@ -164,15 +164,12 @@ export const FLOWS = {
     ...shot('80-rules'),
   ]),
   'all-balls.yaml': flow('Draw all 90 balls, drawing disabled, a card can still be checked (AC-37)', ['e2e'], [
-    ...start(),
-    // Taps during the 1 s roll are ignored by design, so the loop simply taps until every ball is out.
-    '- repeat:',
-    '    while:',
-    '      notVisible: "Toutes les boules sont sorties"',
-    '    commands:',
-    '      - tapOn:',
-    '          id: "game-draw"',
-    '          retryTapIfNoChange: false',
+    // The game starts with 88 balls drawn by the engine (testing aid), the last 2 are drawn by hand.
+    ...start('refuse', 88).filter((l) => !l.includes('Touche la boule')),
+    ...see('Boule n°88'),
+    ...draw(89),
+    ...draw(90),
+    ...see('Toutes les boules sont sorties'),
     ...see('Boule n°90'),
     ...seeId('game-draw', { enabled: false }),
     ...shot('90-all-balls'),
