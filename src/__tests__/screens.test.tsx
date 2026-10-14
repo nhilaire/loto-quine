@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { logEvent } from '@react-native-firebase/analytics';
+import { recordError } from '@react-native-firebase/crashlytics';
 import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import { useKeepAwake } from 'expo-keep-awake';
 
@@ -315,5 +316,27 @@ describe('screens and navigation', () => {
     expect(screen.getByText('Continuer le tirage')).toBeTruthy();
     expect(screen.getByTestId('game-stage')).toHaveTextContent('Quine');
     expect((logEvent as jest.Mock).mock.calls.map((c) => c[1])).toEqual(['game_start']);
+  });
+
+  it('AC-21: a failing voice does not change the game, the error is reported', async () => {
+    const failing: Feedback = {
+      speak: () => {
+        throw new Error('no French voice');
+      },
+      stopSpeech: () => {},
+      sound: () => {},
+      haptic: () => {},
+    };
+    setFeedback(failing);
+    try {
+      await start('granted');
+      await drawBalls(2);
+      expect(screen.getByTestId('game-counter')).toHaveTextContent('Boule n°2');
+      expect(screen.getByTestId('game-ball').props.accessibilityLabel).toBe(`Boule ${BALLS[1]}`);
+      expect(screen.getByTestId('game-draw').props.accessibilityState.disabled).toBe(false);
+      expect(recordError).toHaveBeenCalledTimes(2);
+    } finally {
+      setFeedback(null);
+    }
   });
 });

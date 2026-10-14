@@ -1,7 +1,10 @@
 import * as Haptics from 'expo-haptics';
 import * as Speech from 'expo-speech';
 
+import { recordError } from '@react-native-firebase/crashlytics';
+
 import { createExpoFeedback } from '../audio/expoFeedback';
+import { applyConsent } from '../telemetry/telemetry';
 import { Feedback, onReveal, onRollStart, onWinValidated } from '../audio/feedback';
 import { DEFAULT_SETTINGS, Settings } from '../storage/settings';
 
@@ -59,6 +62,15 @@ describe('expo feedback (AC-21)', () => {
     createExpoFeedback().speak(`47${NB}!`);
     expect(Speech.stop).toHaveBeenCalled();
     expect(Speech.speak).toHaveBeenCalledWith(`47${NB}!`, expect.objectContaining({ language: 'fr-FR' }));
+  });
+
+  it('AC-21: an asynchronous text-to-speech error is reported, not thrown', async () => {
+    await applyConsent(true);
+    createExpoFeedback().speak(`5${NB}!`);
+    const options = (Speech.speak as jest.Mock).mock.calls[0][1];
+    expect(() => options.onError(new Error('TTS engine unavailable'))).not.toThrow();
+    expect(recordError).toHaveBeenCalledTimes(1);
+    await applyConsent(false);
   });
 
   it('vibrates lightly on reveal and with a success pattern on win', () => {
