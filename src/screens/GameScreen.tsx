@@ -20,7 +20,7 @@ export function GameScreen({ onExit, onGameOver }: Props) {
     const t = Date.now();
     dispatch({ type: 'start', now: t });
     setNow(t);
-    track('game_start', { level: 1 });
+    track('game_start', {});
   };
 
   useEffect(start, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -38,7 +38,8 @@ export function GameScreen({ onExit, onGameOver }: Props) {
   useEffect(() => {
     if (state.status !== 'over' || reported.current) return;
     reported.current = true;
-    track('game_over', { level: state.level, score: state.score, duration_s: durationSeconds(state) });
+    // Placeholder until /build-game replaces this screen with the loto game.
+    track('game_end', { result: 'stopped', stage: 'quine', duration_min: Math.floor(durationSeconds(state) / 60) });
     onGameOver(state.score);
   }, [state, onGameOver]);
 

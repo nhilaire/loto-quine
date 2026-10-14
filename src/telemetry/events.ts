@@ -1,9 +1,12 @@
 // Typed catalog of the only telemetry events this app may send (must match docs/PRD.md "Telemetry events").
 // Params are numbers or short lowercase enums. Never identifiers, names, free text or locations.
 
+export type Stage = 'quine' | 'double_quine' | 'carton_plein';
+
 export type TelemetryEvents = {
-  game_start: { level: number };
-  game_over: { level: number; score: number; duration_s: number };
+  game_start: Record<string, never>;
+  stage_won: { stage: Stage; balls: number; choice: 'continue' | 'new_draw' | 'end' };
+  game_end: { result: 'completed' | 'stopped' | 'replaced'; stage: Stage; duration_min: number };
 };
 
 export type EventName = keyof TelemetryEvents;
