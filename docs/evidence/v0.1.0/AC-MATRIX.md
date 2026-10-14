@@ -4,9 +4,9 @@ Produced by the `verifier` agent from the PRD and the evidence of this version. 
 Result is `PASS`, `FAIL` or `NOT PROVEN`. Evidence must be a concrete pointer (test name, flow + screenshot, report line).
 
 Rows AC-01 to AC-39 by the verifier agent on commit 85ddab8; the agent's own summary line said "35 PASS", its rows count 37.
-Re-verified on commit d122c5c (REPORT.md Overall PASS, Jest 110/110, 11/11 flows, no crash, telemetry seen; DEVICE-CHECKS.md
-re-run on the same build with identical results). Commits after 85ddab8 only rename the check (AC-40, phone test feedback);
-the AC-40 row was added on d122c5c. Summary: 38 PASS, 0 FAIL, 0 NOT PROVEN, 2 PENDING RELEASE (AC-28 arm64 size, AC-32).
+Re-verified on commit cad2b5f (REPORT.md Overall PASS, Jest 111/111, 11/11 flows, no crash, telemetry seen; DEVICE-CHECKS.md
+re-run on the same build with identical results). Commits after 85ddab8 follow the phone test: check renamed (AC-40, row added on d122c5c) and 67 spoken
+« sixe sévène » (AC-23 amended, row updated on cad2b5f). Summary: 38 PASS, 0 FAIL, 0 NOT PROVEN, 2 PENDING RELEASE (AC-28 arm64 size, AC-32).
 
 | AC | Criterion (short) | Proof type | Evidence | Result |
 |---|---|---|---|---|
@@ -32,7 +32,7 @@ the AC-40 row was added on d122c5c. Summary: 38 PASS, 0 FAIL, 0 NOT PROVEN, 2 PE
 | AC-20 | the 5 settings toggles survive a restart | e2e | .maestro/settings.yaml: all 5 toggled, stopApp/launchApp, each asserted checked false; maestro.txt Passed; screens/70-settings-on.png, 71-settings-off.png; settings.test.tsx "toggles in the settings screen survive a restart" | PASS |
 | AC-21 | speech text with nicknames off/on, fr-FR, previous speech stopped, voice off silent, failure leaves state unchanged | unit | nicknames.test.ts "AC-21: plain announcement with nicknames off, nickname with them on"; feedback.test.ts "AC-21: speaks the plain number or the nickname depending on settings", "AC-21: says nothing with the voice off", "stops the previous announcement and speaks in fr-FR", "AC-21: an asynchronous text-to-speech error is reported, not thrown" (onError, recordError x1); screens.test.tsx "AC-21: a failing voice does not change the game, the error is reported" (speak throws, game-counter "Boule n°2", game-ball label = 2nd ball, game-draw enabled, recordError x2); passed on 85ddab8 | PASS |
 | AC-22 | sound/vibration on reveal and win when on; nothing when off | unit | feedback.test.ts "AC-22: roll sound, reveal vibration, win sound and vibration when on; nothing when off", "vibrates lightly on reveal and with a success pattern on win"; passed | PASS |
-| AC-23 | nickname keys 1-90, non-empty, shown = spoken | unit | nicknames.test.ts "AC-23: every key is a ball 1-90 and every nickname is non-empty", "AC-23: the nickname shown equals the spoken one"; passed | PASS |
+| AC-23 | nickname keys 1-90, non-empty, shown = spoken | unit | nicknames.test.ts "AC-23: every key is a ball 1-90 and every nickname is non-empty", "AC-23: the nickname shown equals the spoken one, except the documented pronunciation fixes", "AC-23: 67 is shown « six-seven » and spoken « sixe sévène »"; passed on cad2b5f | PASS |
 | AC-24 | rules page shows Quine, Double quine, Carton plein | e2e | .maestro/rules.yaml: assertVisible "Quine : ...", "Double quine : deux lignes complètes.", "Carton plein : les trois lignes."; maestro.txt Passed; screens/80-rules.png | PASS |
 | AC-25 | game_start, stage_won, game_end with exactly the table params | unit | telemetryRules.test.ts (4 tests, exact params via toEqual for replaced/continue/new_draw/completed/stopped); screens.test.tsx "AC-25: game_start, stage_won and game_end are logged after consent"; passed | PASS |
 | AC-26 | consent refused or statistics off sends nothing | unit | screens.test.tsx "AC-26: nothing is logged when consent is refused", "AC-26: nothing is logged once statistics are turned off in the settings"; telemetry.test.ts "sends nothing without consent"; passed | PASS |

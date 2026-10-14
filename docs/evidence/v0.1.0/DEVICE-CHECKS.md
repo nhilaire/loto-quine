@@ -1,7 +1,7 @@
 # Device checks: Loto Quine v0.1.0
 
-Manual commands run on 2026-10-14 against the release APK of commit d122c5c, the same build as REPORT.md
-(`dist/loto-quine-0.1.0-universal.apk`, SHA-256 84270ffcb56ba953...), on emulator sdk_gphone64_x86_64, Android 16
+Manual commands run on 2026-10-14 against the release APK of commit cad2b5f, the same build as REPORT.md
+(`dist/loto-quine-0.1.0-universal.apk`, SHA-256 8c2dbefcbf1db8f2...), on emulator sdk_gphone64_x86_64, Android 16
 (API 36). Raw outputs are in `raw/` (local, git-ignored): `device-permissions.txt`, `device-manifest.txt`,
 `device-refuse-logcat.txt`, `device-keep-awake.txt`.
 
