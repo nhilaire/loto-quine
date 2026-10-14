@@ -34,3 +34,14 @@ describe('French copy (AC-30, AC-34)', () => {
     expect(texts).not.toMatch(/\b(vous|votre|vos)\b/i);
   });
 });
+
+describe('check wording follows the stage (AC-40)', () => {
+  it('names what is checked and which rows to enter', () => {
+    expect(fr.check.title).toEqual({ quine: 'Vérifier une quine', double_quine: 'Vérifier une double quine', carton_plein: 'Vérifier un carton plein' });
+    expect(fr.check.need).toEqual({
+      quine: 'Saisis seulement la ligne gagnante.',
+      double_quine: 'Saisis seulement les 2 lignes gagnantes.',
+      carton_plein: 'Saisis les 3 lignes du carton.',
+    });
+  });
+});

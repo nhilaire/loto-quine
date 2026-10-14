@@ -42,7 +42,10 @@ tags:
     timeout: 5000
 - tapOn:
     id: "game-check"
-- assertVisible: "Vérifier un carton"
+- assertVisible:
+    id: "check-title"
+    text: "Vérifier une quine"
+- assertVisible: "Saisis seulement la ligne gagnante."
 - tapOn:
     id: "key-5"
 - tapOn:

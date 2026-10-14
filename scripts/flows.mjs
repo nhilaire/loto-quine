@@ -36,7 +36,8 @@ const draw = (n) => [...tap('game-draw'), `- extendedWaitUntil:`, `    visible: 
 const draws = (count) => Array.from({ length: count }, (_, i) => draw(i + 1)).flat();
 const typeRow = (numbers) =>
   numbers.flatMap((n) => [...String(n)].flatMap((d) => tap(`key-${d}`)).concat(n < 10 ? tap('key-next') : []));
-const winRow = () => [...tap('game-check'), ...see('Vérifier un carton'), ...typeRow(WIN_ROW), ...tap('check-verify'), ...see('Gagné !')];
+const winRow = () => [...tap('game-check'), ...seeId('check-title', { text: 'Vérifier une quine' }),
+  ...see('Saisis seulement la ligne gagnante.'), ...typeRow(WIN_ROW), ...tap('check-verify'), ...see('Gagné !')];
 
 function flow(name, tags, steps) {
   return [APP, `name: ${name}`, 'tags:', ...tags.map((t) => `  - ${t}`), '---', ...steps].join('\n') + '\n';

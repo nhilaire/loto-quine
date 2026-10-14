@@ -105,7 +105,8 @@ describe('screens and navigation', () => {
     await start();
     await drawBalls(5);
     await fireEvent.press(screen.getByTestId('game-check'));
-    expect(screen.getByText('Quine · Il faut 1 ligne complète.')).toBeTruthy();
+    expect(screen.getByTestId('check-title')).toHaveTextContent('Vérifier une quine');
+    expect(screen.getByText('Saisis seulement la ligne gagnante.')).toBeTruthy();
     await enterRow(BALLS.slice(0, 5));
     await fireEvent.press(screen.getByTestId('check-verify'));
     expect(screen.getByTestId('check-verdict')).toHaveTextContent(`Gagné${NB}!`);
@@ -114,6 +115,7 @@ describe('screens and navigation', () => {
     await fireEvent.press(screen.getByTestId('win-continue'));
     expect(screen.getByTestId('game-stage')).toHaveTextContent('Double quine');
     expect(screen.getByTestId('game-counter')).toHaveTextContent('Boule n°5');
+    expect(screen.getByText('Vérifier une double quine')).toBeTruthy();
   });
 
   it('AC-16: a row with an undrawn number is not yet a win, Retour changes nothing', async () => {

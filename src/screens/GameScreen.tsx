@@ -90,7 +90,7 @@ export function GameScreen({ game, nicknames, onDraw, onRevealed, onCheck, onHom
         </Text>
       ) : null}
       <Button label={fr.game.draw} onPress={onDraw} disabled={!drawEnabled} large testID="game-draw" />
-      <Button label={fr.game.check} onPress={onCheck} variant="secondary" disabled={rolling} testID="game-check" />
+      <Button label={fr.check.title[game.stage]} onPress={onCheck} variant="secondary" disabled={rolling} testID="game-check" />
 
       <Dialog visible={game.pendingWin} title={fr.win.title} onRequestClose={() => {}} testID="win-dialog" decoration={<Confetti />}>
         <Button label={fr.win.continue} onPress={() => onChoose('continue')} testID="win-continue" />

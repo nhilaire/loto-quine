@@ -34,7 +34,6 @@ export const fr = {
     counter: (n: number) => `Boule n°${n}`,
     noBall: 'Touche la boule pour commencer',
     draw: 'Tirer une boule',
-    check: 'Vérifier un carton',
     lastBalls: 'Dernières boules',
     allOut: 'Toutes les boules sont sorties',
     end: 'Terminer la partie',
@@ -49,11 +48,16 @@ export const fr = {
     home: 'Accueil',
   },
   check: {
-    title: 'Vérifier un carton',
+    // The check follows the stage: only the winning rows are entered (user feedback 2026-10-14, AC-40).
+    title: {
+      quine: 'Vérifier une quine',
+      double_quine: 'Vérifier une double quine',
+      carton_plein: 'Vérifier un carton plein',
+    },
     need: {
-      quine: 'Il faut 1 ligne complète.',
-      double_quine: 'Il faut 2 lignes complètes.',
-      carton_plein: 'Il faut les 3 lignes complètes.',
+      quine: 'Saisis seulement la ligne gagnante.',
+      double_quine: 'Saisis seulement les 2 lignes gagnantes.',
+      carton_plein: 'Saisis les 3 lignes du carton.',
     },
     next: 'Suivant',
     erase: 'Effacer',
@@ -96,7 +100,8 @@ export const fr = {
       `Quine${N}: le premier à compléter une ligne crie «${N}Quine${N}!${N}».`,
       `Double quine${N}: deux lignes complètes.`,
       `Carton plein${N}: les trois lignes.`,
-      `L'animateur vérifie le carton avec «${N}Vérifier un carton${N}». S'il y a plusieurs gagnants sur la même boule, ` +
+      `L'animateur vérifie avec «${N}Vérifier une quine${N}» (puis double quine, carton plein)${N}: on ne saisit que les lignes gagnantes. ` +
+        `S'il y a plusieurs gagnants sur la même boule, ` +
         `chacun tire un numéro${N}: le plus haut gagne.`,
     ],
   },

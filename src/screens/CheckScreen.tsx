@@ -73,11 +73,11 @@ export function CheckScreen({ game, onBack, onValidate, onTieReveal }: Props) {
 
   return (
     <Screen testID="check-screen" gap={spacing.sm}>
-      <Text style={styles.title} accessibilityRole="header">
-        {fr.check.title}
+      <Text style={styles.title} accessibilityRole="header" testID="check-title">
+        {fr.check.title[game.stage]}
       </Text>
       <Text style={styles.need} testID="check-need">
-        {`${fr.stage[game.stage]} · ${fr.check.need[game.stage]}`}
+        {fr.check.need[game.stage]}
       </Text>
       <ScrollView contentContainerStyle={styles.scroll}>
         {card.map((row, r) => {

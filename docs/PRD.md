@@ -64,9 +64,10 @@ French pitch: « Ton animateur de loto dans la poche : tire les boules, annonce-
   progress), « Règles », « Paramètres ».
 - **Game**: stage banner (« Quine », « Double quine », « Carton plein »), the big ball (number + nickname line when
   nicknames are on), ball counter « Boule n°{n} », the last 5 balls in draw order, the 1-90 board, button
-  « Tirer une boule » (the ball itself is also tappable), button « Vérifier un carton », menu entry
+  « Tirer une boule » (the ball itself is also tappable), check button named after the stage (« Vérifier une quine »,
+  « Vérifier une double quine », « Vérifier un carton plein »), menu entry
   « Terminer la partie ». The screen stays on while Game or Check is displayed.
-- **Check** (« Vérifier un carton »): reminds the current stage and what it requires; a 3 × 5 grid of cells and a
+- **Check** (title named after the stage, see AC-40): tells which rows to enter (only the winning ones); a 3 × 5 grid of cells and a
   numeric keypad (0-9, erase, next cell); button « Vérifier »; the result marks each entered number drawn or missing
   and gives the verdict; on a win, « Valider le gagnant »; « Retour » goes back to Game without changing anything.
 - **Tie-break** (« Départager les gagnants », from Check after « Gagné ! »): number of tied winners (stepper 2-10,
@@ -291,7 +292,7 @@ phone or emulator, `[manual]` human judgement (kept rare).
 - AC-14 [e2e] Given a game with seed 42 and 3 balls drawn, when the app is killed and relaunched, then Game opens
   directly with « Boule n°3 », the same last ball and the same board, without replaying the voice.
 - AC-15 [e2e] Given a game with seed 42 and enough balls drawn to complete a known row, when the host enters that row
-  in « Vérifier un carton » and taps « Vérifier », then « Gagné ! » is shown; when « Valider le gagnant » then
+  in « Vérifier une quine » and taps « Vérifier », then « Gagné ! » is shown; when « Valider le gagnant » then
   « Continuer le tirage » are tapped, then the banner shows « Double quine » and the counter is unchanged.
 - AC-16 [e2e] Given a game, when a row with an undrawn number is checked, then « Pas encore… » and « Il manque 1
   numéro » are shown, and « Retour » goes back to Game with nothing changed.
@@ -334,13 +335,17 @@ phone or emulator, `[manual]` human judgement (kept rare).
 - AC-36 [device] Given Game or Check shown on the emulator, when `adb shell dumpsys window` is read, then the app
   window has FLAG_KEEP_SCREEN_ON; on Home it does not.
 - AC-37 [e2e] Given seed 42, when 90 balls are drawn, then « Toutes les boules sont sorties » is shown, the draw
-  button is disabled, « Vérifier un carton » still opens Check, and logcat shows no FATAL EXCEPTION.
+  button is disabled, the check button still opens Check, and logcat shows no FATAL EXCEPTION.
 - AC-38 [unit] Given k tied winners (2 ≤ k ≤ 10) and a game state, when each player draws, then the k numbers are
   distinct and in 1-90, the winner is the player with the highest number, the result is identical for the same game
   state, and the main draw (balls, counter, generator state) is unchanged.
 - AC-39 [e2e] Given seed 42 and a winning card on Check, when « Départager les gagnants » is tapped with 2 winners
   and both « Tirer » are tapped, then « Le joueur {k} gagne avec le {n} ! » is shown with the higher number; when
   « Valider le gagnant » is tapped, then the Win choice is shown.
+- AC-40 [unit] Given the stage quine / double quine / carton plein, when Game and Check are shown, then the check button
+  and the Check title read « Vérifier une quine » / « Vérifier une double quine » / « Vérifier un carton plein » and the
+  hint reads « Saisis seulement la ligne gagnante. » / « Saisis seulement les 2 lignes gagnantes. » / « Saisis les 3
+  lignes du carton. ».
 - AC-31 [manual] Given the nickname list, when the user reviews it before release, then every nickname is approved
   as traditional and family-friendly.
 - AC-32 [manual] Given the release APK on the user's phone, when a family game is played, then the number is readable
@@ -368,7 +373,6 @@ Tone: tu. French typography: no-break space before « : ; ! ? » and inside « �
 | game.counter | Boule n°{n} |
 | game.noBall | Touche la boule pour commencer |
 | game.draw | Tirer une boule |
-| game.check | Vérifier un carton |
 | game.lastBalls | Dernières boules |
 | game.allOut | Toutes les boules sont sorties |
 | game.end | Terminer la partie |
@@ -378,10 +382,12 @@ Tone: tu. French typography: no-break space before « : ; ! ? » and inside « �
 | common.no | Non |
 | common.back | Retour |
 | common.home | Accueil |
-| check.title | Vérifier un carton |
-| check.need.quine | Il faut 1 ligne complète. |
-| check.need.doubleQuine | Il faut 2 lignes complètes. |
-| check.need.cartonPlein | Il faut les 3 lignes complètes. |
+| check.title.quine | Vérifier une quine |
+| check.title.doubleQuine | Vérifier une double quine |
+| check.title.cartonPlein | Vérifier un carton plein |
+| check.need.quine | Saisis seulement la ligne gagnante. |
+| check.need.doubleQuine | Saisis seulement les 2 lignes gagnantes. |
+| check.need.cartonPlein | Saisis les 3 lignes du carton. |
 | check.next | Suivant |
 | check.erase | Effacer |
 | check.verify | Vérifier |
@@ -411,7 +417,7 @@ Tone: tu. French typography: no-break space before « : ; ! ? » and inside « �
 | over.balls.other | {n} boules tirées |
 | over.duration | Durée : {n} min |
 | rules.title | Règles |
-| rules.body | Chaque joueur a un ou plusieurs cartons de 3 lignes de 5 numéros. Quand un numéro sort, marque-le sur ton carton. Quine : le premier à compléter une ligne crie « Quine ! ». Double quine : deux lignes complètes. Carton plein : les trois lignes. L'animateur vérifie le carton avec « Vérifier un carton ». S'il y a plusieurs gagnants sur la même boule, chacun tire un numéro : le plus haut gagne. |
+| rules.body | Chaque joueur a un ou plusieurs cartons de 3 lignes de 5 numéros. Quand un numéro sort, marque-le sur ton carton. Quine : le premier à compléter une ligne crie « Quine ! ». Double quine : deux lignes complètes. Carton plein : les trois lignes. L'animateur vérifie avec « Vérifier une quine » (puis double quine, carton plein) : on ne saisit que les lignes gagnantes. S'il y a plusieurs gagnants sur la même boule, chacun tire un numéro : le plus haut gagne. |
 | settings.title | Paramètres |
 | settings.voice | Voix |
 | settings.nicknames | Surnoms |
@@ -423,6 +429,10 @@ Tone: tu. French typography: no-break space before « : ; ! ? » and inside « �
 
 `{n}` is a number; `{nickname}` comes from the nickname data file. `.one` is used for n = 0 or 1, `.other` for
 n ≥ 2 (French rule).
+
+Amendment 2026-10-14 (phone test, decided by the user): « Vérifier un carton » suggested a full card had to be
+entered. The check is now named after the stage and tells which rows to enter (only the winning ones); the 3-row grid
+is kept (user choice « juste renommer »). New AC-40.
 
 ## Out of scope
 
