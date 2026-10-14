@@ -3,9 +3,9 @@
 Phone install: PASS
 User acceptance: pending
 Date: 2026-10-14
-Commit: 7c3892c
+Commit: 0d9305a
 APK: loto-quine-0.1.0-arm64-v8a.apk (33.8 MB, arm64-v8a)
-SHA-256: 61a4106e310f1e0fdca67575e741e92f796f5a3cb336c701ff8b45373178526d
+SHA-256: 489de54e9f4f0950509fb3c7988850d74525ca62d0679777f282fa922cc50ed1
 Signature: release signature valid
 Phone: Android 11 (API 30, arm64-v8a)
 Launch check: alive after 10 s, no fatal error
@@ -17,3 +17,6 @@ Launch check: alive after 10 s, no fatal error
   (« Vérifier un carton », 3 empty rows) did not say so. Fix chosen by the user: rename only (AC-40); the Game button
   is simply « Vérifier », the Check screen title names the stage. Not accepted
   yet: re-verify and reinstall.
+- 2026-10-14, second install (commit 0d9305a): « pour six-seven, on entend vraiment six en français, il faudrait
+  entendre sixe ». Fix chosen by the user: the voice reads « sixe sévène », the screen still shows « six-seven »
+  (AC-23 amended).

@@ -304,12 +304,14 @@ phone or emulator, `[manual]` human judgement (kept rare).
 - AC-20 [e2e] Given Settings, when « Voix », « Surnoms », « Sons », « Vibrations » or « Statistiques anonymes » is
   toggled and the app is restarted, then the new value is kept.
 - AC-21 [unit] Given voice on, when a ball is revealed, then the speech text is « {n} ! » with nicknames off and
-  « {n}, {nickname} ! » with nicknames on for a number having a nickname, spoken with language fr-FR, and the
+  « {n}, {nickname} ! » with nicknames on for a number having a nickname (spoken form of the nickname, see AC-23), spoken
+  with language fr-FR, and the
   previous speech is stopped; given voice off, nothing is spoken; given a speech failure, the game state is unchanged.
 - AC-22 [unit] Given sounds on / vibrations on, when a ball is revealed or a winner validated, then the matching
   sound / vibration is triggered; given them off, nothing is triggered.
 - AC-23 [unit] Given the nickname data file, then every key is a number 1-90, every nickname is non-empty, and the
-  nickname shown under the ball equals the spoken one.
+  nickname shown under the ball equals the spoken one, except the documented pronunciation fixes (67 shown
+  « six-seven », spoken « sixe sévène »; amendment 2026-10-14 after the phone test).
 - AC-24 [e2e] Given Home, when « Règles » is tapped, then the rules page shows « Quine », « Double quine » and
   « Carton plein ».
 - AC-25 [unit] Given the game flow, when a game starts, a winner is validated, or a game ends, then `game_start`,

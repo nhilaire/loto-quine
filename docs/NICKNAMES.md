@@ -44,7 +44,7 @@ Sources:
 | 45 | la moitié du jeu | A, L | yes |
 | 47 | les pruneaux | A, L | yes |
 | 65 | les miracles | A, L | yes |
-| 67 | six-seven | chosen by the user (sources: les saucisses) | yes |
+| 67 | six-seven | chosen by the user (sources: les saucisses); spoken « sixe sévène » | yes |
 | 80 | dans un coin | A, L | yes |
 | 87 | la porcelaine | A, L | yes |
 | 88 | les deux cacahuètes | A (L, P: les deux courges) | yes |

@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 import { announcement } from '../game/announce';
-import { NICKNAMES } from '../game/nicknames';
+import { NICKNAMES, SPOKEN_NICKNAMES } from '../game/nicknames';
 import { typographyProblems } from '../i18n/typography';
 
 const NB = ' ';
@@ -24,11 +24,16 @@ describe('nicknames (AC-21, AC-23, AC-30, AC-31)', () => {
     expect(announcement(46, true)).toEqual({ spoken: `46${NB}!`, nickname: null });
   });
 
-  it('AC-23: the nickname shown equals the spoken one', () => {
+  it('AC-23: the nickname shown equals the spoken one, except the documented pronunciation fixes', () => {
     for (let n = 1; n <= 90; n++) {
       const a = announcement(n, true);
-      if (a.nickname) expect(a.spoken).toContain(a.nickname);
+      if (a.nickname) expect(a.spoken).toContain(SPOKEN_NICKNAMES[n] ?? a.nickname);
     }
+    expect(Object.keys(SPOKEN_NICKNAMES).every((k) => NICKNAMES[Number(k)] !== undefined)).toBe(true);
+  });
+
+  it('AC-23: 67 is shown « six-seven » and spoken « sixe sévène » (French voice, phone test 2026-10-14)', () => {
+    expect(announcement(67, true)).toEqual({ spoken: `67, sixe sévène${NB}!`, nickname: 'six-seven' });
   });
 
   it('AC-30: announcements follow French typography', () => {

@@ -35,6 +35,12 @@ export const NICKNAMES: Readonly<Record<number, string>> = {
   90: 'le papé',
 };
 
+// What the French voice reads when the shown nickname would be mispronounced (phone test 2026-10-14: the voice read
+// « six » the French way). Keys must also be in NICKNAMES.
+export const SPOKEN_NICKNAMES: Readonly<Record<number, string>> = {
+  67: 'sixe sévène',
+};
+
 export function nicknameOf(ball: number): string | null {
   return NICKNAMES[ball] ?? null;
 }
