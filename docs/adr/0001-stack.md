@@ -60,6 +60,11 @@ on Android 11+ (add it with a small config plugin if not); the gradient API rend
 - Text-to-speech quality depends on the phone's installed French voice (Google TTS on most phones); the app stays
   usable silently without it (PRD).
 
+Amendment 2026-10-14 (build): animations use React Native's built-in Animated API with the native driver instead of
+Reanimated: one ball, a short confetti burst and a static board do not need it, and it keeps one dependency out.
+The gradients use `experimental_backgroundImage` (radial-gradient), so `react-native-svg` is not needed either.
+`expo-speech` declares the Android 11+ `TTS_SERVICE` package query in its own manifest (checked in node_modules).
+
 ## Alternatives considered
 
 - Bare React Native: same libraries would work, but it adds native upgrade work and an unproven build path in the
