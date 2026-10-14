@@ -1,0 +1,34 @@
+appId: io.github.nhilaire.lotoquine
+name: Starting a new game while one is in progress asks first (AC-19)
+tags:
+  - e2e
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: "consent-screen"
+    timeout: 20000
+- openLink: "lotoquine://seed/42"
+- tapOn:
+    id: "consent-refuse"
+- tapOn:
+    id: "home-new-game"
+- assertVisible: "Touche la boule pour commencer"
+- tapOn:
+    id: "game-draw"
+- extendedWaitUntil:
+    visible: "Boule n°1"
+    timeout: 5000
+- tapOn:
+    id: "game-home"
+- assertVisible: "Reprendre la partie"
+- tapOn:
+    id: "home-new-game"
+- assertVisible: "Une partie est en cours. En commencer une nouvelle ?"
+- takeScreenshot: 60-replace-confirm
+- tapOn:
+    id: "confirm-no"
+- tapOn:
+    id: "home-resume"
+- assertVisible: "Boule n°1"

@@ -1,31 +1,29 @@
 appId: io.github.nhilaire.lotoquine
-name: Smoke - first launch, refuse telemetry, play one round
+name: Smoke - consent in French, refuse, no consent screen after a restart (AC-01, AC-02)
 tags:
   - smoke
 ---
 - launchApp:
     clearState: true
-- assertVisible: "Votre vie privée"
+- extendedWaitUntil:
+    visible:
+      id: "consent-screen"
+    timeout: 20000
+- assertVisible: "Statistiques anonymes"
+- assertVisible: "Accepter"
+- assertVisible: "Refuser"
 - takeScreenshot: 01-consent
 - tapOn:
     id: "consent-refuse"
 - assertVisible:
     id: "home-screen"
+- assertVisible: "Nouvelle partie"
 - takeScreenshot: 02-home
-- tapOn:
-    id: "home-play"
-- assertVisible:
-    id: "game-tap-zone"
-- tapOn:
-    id: "game-tap-zone"
-- tapOn:
-    id: "game-tap-zone"
-- takeScreenshot: 03-game
+- stopApp
+- launchApp
 - extendedWaitUntil:
-    visible: "Partie terminée"
+    visible:
+      id: "home-screen"
     timeout: 20000
-- takeScreenshot: 04-game-over
-- tapOn:
-    id: "game-home"
-- assertVisible:
-    id: "home-screen"
+- assertNotVisible:
+    id: "consent-screen"

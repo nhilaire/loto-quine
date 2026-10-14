@@ -1,19 +1,78 @@
 appId: io.github.nhilaire.lotoquine
-name: Telemetry - accept consent and play one round (events checked in logcat by verify.mjs)
+name: Telemetry - accept consent, win a quine, end the game - events checked in logcat by verify.mjs (AC-27)
 tags:
   - telemetry
 ---
 - launchApp:
     clearState: true
+- extendedWaitUntil:
+    visible:
+      id: "consent-screen"
+    timeout: 20000
+- openLink: "lotoquine://seed/42"
 - tapOn:
     id: "consent-accept"
-- assertVisible:
-    id: "home-screen"
 - tapOn:
-    id: "home-play"
+    id: "home-new-game"
+- assertVisible: "Touche la boule pour commencer"
 - tapOn:
-    id: "game-tap-zone"
+    id: "game-draw"
 - extendedWaitUntil:
-    visible: "Partie terminée"
-    timeout: 20000
+    visible: "Boule n°1"
+    timeout: 5000
+- tapOn:
+    id: "game-draw"
+- extendedWaitUntil:
+    visible: "Boule n°2"
+    timeout: 5000
+- tapOn:
+    id: "game-draw"
+- extendedWaitUntil:
+    visible: "Boule n°3"
+    timeout: 5000
+- tapOn:
+    id: "game-draw"
+- extendedWaitUntil:
+    visible: "Boule n°4"
+    timeout: 5000
+- tapOn:
+    id: "game-draw"
+- extendedWaitUntil:
+    visible: "Boule n°5"
+    timeout: 5000
+- tapOn:
+    id: "game-check"
+- assertVisible: "Vérifier un carton"
+- tapOn:
+    id: "key-5"
+- tapOn:
+    id: "key-5"
+- tapOn:
+    id: "key-4"
+- tapOn:
+    id: "key-0"
+- tapOn:
+    id: "key-7"
+- tapOn:
+    id: "key-8"
+- tapOn:
+    id: "key-6"
+- tapOn:
+    id: "key-1"
+- tapOn:
+    id: "key-1"
+- tapOn:
+    id: "key-6"
+- tapOn:
+    id: "check-verify"
+- assertVisible: "Gagné !"
+- tapOn:
+    id: "check-validate"
+- tapOn:
+    id: "win-continue"
+- tapOn:
+    id: "game-end"
+- tapOn:
+    id: "confirm-yes"
+- assertVisible: "Partie arrêtée"
 - takeScreenshot: telemetry-game-over

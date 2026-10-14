@@ -1,0 +1,53 @@
+appId: io.github.nhilaire.lotoquine
+name: Settings persist after a restart (AC-20)
+tags:
+  - e2e
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: "consent-screen"
+    timeout: 20000
+- tapOn:
+    id: "consent-accept"
+- tapOn:
+    id: "home-settings"
+- assertVisible:
+    id: "settings-voice"
+    checked: true
+- takeScreenshot: 70-settings-on
+- tapOn:
+    id: "settings-voice"
+- tapOn:
+    id: "settings-nicknames"
+- tapOn:
+    id: "settings-sounds"
+- tapOn:
+    id: "settings-vibrations"
+- tapOn:
+    id: "settings-stats"
+- takeScreenshot: 71-settings-off
+- stopApp
+- launchApp
+- extendedWaitUntil:
+    visible:
+      id: "home-screen"
+    timeout: 20000
+- tapOn:
+    id: "home-settings"
+- assertVisible:
+    id: "settings-voice"
+    checked: false
+- assertVisible:
+    id: "settings-nicknames"
+    checked: false
+- assertVisible:
+    id: "settings-sounds"
+    checked: false
+- assertVisible:
+    id: "settings-vibrations"
+    checked: false
+- assertVisible:
+    id: "settings-stats"
+    checked: false

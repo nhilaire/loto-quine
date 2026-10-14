@@ -1,0 +1,80 @@
+appId: io.github.nhilaire.lotoquine
+name: New draw after a quine clears the board (AC-17)
+tags:
+  - e2e
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: "consent-screen"
+    timeout: 20000
+- openLink: "lotoquine://seed/42"
+- tapOn:
+    id: "consent-refuse"
+- tapOn:
+    id: "home-new-game"
+- assertVisible: "Touche la boule pour commencer"
+- tapOn:
+    id: "game-draw"
+- extendedWaitUntil:
+    visible: "Boule n°1"
+    timeout: 5000
+- tapOn:
+    id: "game-draw"
+- extendedWaitUntil:
+    visible: "Boule n°2"
+    timeout: 5000
+- tapOn:
+    id: "game-draw"
+- extendedWaitUntil:
+    visible: "Boule n°3"
+    timeout: 5000
+- tapOn:
+    id: "game-draw"
+- extendedWaitUntil:
+    visible: "Boule n°4"
+    timeout: 5000
+- tapOn:
+    id: "game-draw"
+- extendedWaitUntil:
+    visible: "Boule n°5"
+    timeout: 5000
+- tapOn:
+    id: "game-check"
+- assertVisible: "Vérifier un carton"
+- tapOn:
+    id: "key-5"
+- tapOn:
+    id: "key-5"
+- tapOn:
+    id: "key-4"
+- tapOn:
+    id: "key-0"
+- tapOn:
+    id: "key-7"
+- tapOn:
+    id: "key-8"
+- tapOn:
+    id: "key-6"
+- tapOn:
+    id: "key-1"
+- tapOn:
+    id: "key-1"
+- tapOn:
+    id: "key-6"
+- tapOn:
+    id: "check-verify"
+- assertVisible: "Gagné !"
+- tapOn:
+    id: "check-validate"
+- tapOn:
+    id: "win-new-draw"
+- assertVisible:
+    id: "game-stage"
+    text: "Double quine"
+- assertVisible: "Touche la boule pour commencer"
+- assertVisible:
+    id: "board-cell-55"
+    selected: false
+- takeScreenshot: 40-new-draw

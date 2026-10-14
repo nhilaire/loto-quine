@@ -1,0 +1,33 @@
+appId: io.github.nhilaire.lotoquine
+name: Draw all 90 balls, drawing disabled, a card can still be checked (AC-37)
+tags:
+  - e2e
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: "consent-screen"
+    timeout: 20000
+- openLink: "lotoquine://seed/42"
+- tapOn:
+    id: "consent-refuse"
+- tapOn:
+    id: "home-new-game"
+- assertVisible: "Touche la boule pour commencer"
+- repeat:
+    while:
+      notVisible: "Toutes les boules sont sorties"
+    commands:
+      - tapOn:
+          id: "game-draw"
+          retryTapIfNoChange: false
+- assertVisible: "Boule n°90"
+- assertVisible:
+    id: "game-draw"
+    enabled: false
+- takeScreenshot: 90-all-balls
+- tapOn:
+    id: "game-check"
+- assertVisible:
+    id: "check-screen"

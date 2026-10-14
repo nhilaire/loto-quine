@@ -1,0 +1,19 @@
+appId: io.github.nhilaire.lotoquine
+name: Rules page explains the three stages (AC-24)
+tags:
+  - e2e
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: "consent-screen"
+    timeout: 20000
+- tapOn:
+    id: "consent-refuse"
+- tapOn:
+    id: "home-rules"
+- assertVisible: "Quine : le premier à compléter une ligne.*"
+- assertVisible: "Double quine : deux lignes complètes."
+- assertVisible: "Carton plein : les trois lignes."
+- takeScreenshot: 80-rules
