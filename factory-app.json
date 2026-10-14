@@ -1,0 +1,9 @@
+{
+  "slug": "loto-quine",
+  "displayName": "Loto Quine",
+  "package": "io.github.nhilaire.lotoquine",
+  "stack": null,
+  "description": "Family loto (quine) caller: draws numbers 1-90 like a bingo hall host",
+  "language": "fr-FR",
+  "factoryVersion": "1.0.0"
+}
