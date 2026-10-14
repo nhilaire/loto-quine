@@ -15,7 +15,7 @@ Format: `- [ ] T-01 Title (AC-01, AC-02) - proof: unit|e2e|device`. Check the bo
 - [ ] T-08 Warm theme, glossy ball with roll/reveal animation, 1-90 board, last balls strip (AC-13, AC-32) - proof: unit
 - [ ] T-09 Screens and navigation: Home (new / resume), Game, Check with keypad, Tie-break, Win choice, Game over, Rules, confirmations, Android back, keep awake on Game and Check, resume on cold start (AC-14, AC-15, AC-16, AC-17, AC-18, AC-19, AC-24, AC-36, AC-37, AC-39) - proof: unit
 - [ ] T-10 Settings: voice, nicknames, sounds, vibrations, anonymous statistics, persisted (AC-20) - proof: unit
-- [ ] T-11 Feedback layer: French text-to-speech (expo-speech), generated sounds (roll, win), haptics, all toggles respected, speech failure is silent (AC-21, AC-22) - proof: unit
+- [x] T-11 Feedback layer: French text-to-speech (expo-speech), generated sounds (roll, win), haptics, all toggles respected, speech failure is silent (AC-21, AC-22) - proof: unit
 - [ ] T-12 Telemetry calls game_start / stage_won / game_end; native collection off by default (AC-25, AC-26, AC-35) - proof: unit
 - [ ] T-13 Deep link lotoquine://seed/<n> (in-memory seed for the next new game) (AC-13, AC-14, AC-15) - proof: unit
 - [ ] T-14 Maestro flows: smoke (consent refuse + relaunch), draw 3 balls, resume after kill, check win + continue, check not yet, new draw, stop, replace confirm, settings persistence, rules, 90 balls, tie-break, telemetry consent (AC-01, AC-02, AC-13, AC-14, AC-15, AC-16, AC-17, AC-18, AC-19, AC-20, AC-24, AC-27, AC-37, AC-39) - proof: e2e

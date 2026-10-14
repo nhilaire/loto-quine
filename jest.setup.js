@@ -16,3 +16,20 @@ jest.mock('@react-native-firebase/crashlytics', () => ({
   recordError: jest.fn(),
   setCrashlyticsCollectionEnabled: jest.fn(() => Promise.resolve()),
 }));
+
+// Safe-area insets: the library's own mock (zero insets, provider renders its children).
+jest.mock('react-native-safe-area-context', () => require('react-native-safe-area-context/jest/mock').default);
+
+// Voice, sound and haptics: recorded calls only.
+jest.mock('expo-speech', () => ({ speak: jest.fn(), stop: jest.fn(() => Promise.resolve()) }));
+jest.mock('expo-audio', () => {
+  const player = () => ({ play: jest.fn(), pause: jest.fn(), replace: jest.fn(), seekTo: jest.fn(() => Promise.resolve()), remove: jest.fn() });
+  return { createAudioPlayer: jest.fn(() => player()), setAudioModeAsync: jest.fn(() => Promise.resolve()) };
+});
+jest.mock('expo-haptics', () => ({
+  impactAsync: jest.fn(() => Promise.resolve()),
+  notificationAsync: jest.fn(() => Promise.resolve()),
+  ImpactFeedbackStyle: { Light: 'light', Medium: 'medium', Heavy: 'heavy' },
+  NotificationFeedbackType: { Success: 'success', Warning: 'warning', Error: 'error' },
+}));
+jest.mock('expo-keep-awake', () => ({ useKeepAwake: jest.fn(), activateKeepAwakeAsync: jest.fn(), deactivateKeepAwake: jest.fn() }));
