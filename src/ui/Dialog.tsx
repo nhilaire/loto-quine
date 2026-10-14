@@ -8,7 +8,15 @@ type Props = { visible: boolean; title: string; onRequestClose: () => void; chil
 
 export function Dialog({ visible, title, onRequestClose, children, testID, decoration }: Props) {
   return (
-    <Modal visible={visible} transparent animationType="fade" onRequestClose={onRequestClose} statusBarTranslucent navigationBarTranslucent>
+    <Modal
+      visible={visible}
+      transparent
+      animationType="fade"
+      onRequestClose={onRequestClose}
+      statusBarTranslucent
+      navigationBarTranslucent
+      testID={testID ? `${testID}-modal` : undefined}
+    >
       <View style={styles.backdrop}>
         {decoration}
         <View style={styles.card} testID={testID}>

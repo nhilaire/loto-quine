@@ -5,6 +5,7 @@ import { useKeepAwake } from 'expo-keep-awake';
 
 import App from '../App';
 import { setPendingStart } from '../app/testSeed';
+import { Feedback, setFeedback } from '../audio/feedback';
 import { BALL_COUNT, drawBall, emptyDraw } from '../game/draw';
 import { seedFrom } from '../game/random';
 import { tieBreakNumbers, tieBreakWinner } from '../game/tieBreak';
@@ -249,5 +250,70 @@ describe('screens and navigation', () => {
     await fireEvent.press(screen.getByTestId('game-end'));
     await fireEvent.press(screen.getByTestId('confirm-yes'));
     expect(logEvent).not.toHaveBeenCalled();
+  });
+
+  it('AC-08: a duplicate and an out-of-range number are shown in French, with no verdict', async () => {
+    await start();
+    await drawBalls(1);
+    await fireEvent.press(screen.getByTestId('game-check'));
+    await enterRow([55, 55, 40, 78, 61]);
+    await fireEvent.press(screen.getByTestId('check-verify'));
+    expect(screen.getByText('Numéro en double')).toBeTruthy();
+    expect(screen.queryByTestId('check-verdict')).toBeNull();
+    await fireEvent.press(screen.getByTestId('check-back'));
+    await fireEvent.press(screen.getByTestId('game-check'));
+    for (const d of ['0', '0']) await fireEvent.press(screen.getByTestId(`key-${d}`));
+    await enterRow([40, 78, 61, 16]);
+    await fireEvent.press(screen.getByTestId('check-verify'));
+    expect(screen.getByText('Numéro entre 1 et 90')).toBeTruthy();
+    expect(screen.queryByTestId('check-verdict')).toBeNull();
+  });
+
+  it('AC-14: the restored ball is not announced again', async () => {
+    const spoken: string[] = [];
+    const recorder: Feedback = { speak: (t) => spoken.push(t), stopSpeech: () => {}, sound: () => {}, haptic: () => {} };
+    setFeedback(recorder);
+    try {
+      const first = await start();
+      await drawBalls(3);
+      expect(spoken).toHaveLength(3);
+      await first.unmount();
+      await render(<App />);
+      expect(await screen.findByTestId('game-screen')).toBeTruthy();
+      await act(async () => {
+        jest.advanceTimersByTime(3000);
+      });
+      expect(spoken).toHaveLength(3);
+    } finally {
+      setFeedback(null);
+    }
+  });
+
+  it('AC-26: nothing is logged once statistics are turned off in the settings', async () => {
+    await AsyncStorage.setItem('telemetry.consent.v1', 'granted');
+    setPendingStart({ seed: SEED, drawn: 0 });
+    await render(<App />);
+    await fireEvent.press(await screen.findByTestId('home-settings'));
+    await fireEvent(screen.getByTestId('settings-stats'), 'valueChange', false);
+    await fireEvent.press(screen.getByTestId('settings-back'));
+    (logEvent as jest.Mock).mockClear();
+    await fireEvent.press(screen.getByTestId('home-new-game'));
+    await drawBalls(2);
+    await fireEvent.press(screen.getByTestId('game-end'));
+    await fireEvent.press(screen.getByTestId('confirm-yes'));
+    expect(logEvent).not.toHaveBeenCalled();
+  });
+
+  it('AC-33: Android back on the win choice changes nothing', async () => {
+    await start('granted');
+    await drawBalls(5);
+    await fireEvent.press(screen.getByTestId('game-check'));
+    await enterRow(BALLS.slice(0, 5));
+    await fireEvent.press(screen.getByTestId('check-verify'));
+    await fireEvent.press(screen.getByTestId('check-validate'));
+    await fireEvent(screen.getByTestId('win-dialog-modal'), 'requestClose');
+    expect(screen.getByText('Continuer le tirage')).toBeTruthy();
+    expect(screen.getByTestId('game-stage')).toHaveTextContent('Quine');
+    expect((logEvent as jest.Mock).mock.calls.map((c) => c[1])).toEqual(['game_start']);
   });
 });
