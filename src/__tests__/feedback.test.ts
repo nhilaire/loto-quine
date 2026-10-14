@@ -24,7 +24,7 @@ describe('feedback policy (AC-21, AC-22)', () => {
     const fb = recorder();
     onReveal(22, { ...DEFAULT_SETTINGS, nicknames: false }, fb);
     onReveal(22, DEFAULT_SETTINGS, fb);
-    expect(fb.calls.filter((c) => c.startsWith('speak'))).toEqual([`speak:22${NB}!`, `speak:22, les deux cocottes${NB}!`]);
+    expect(fb.calls.filter((c) => c.startsWith('speak'))).toEqual([`speak:22${NB}!`, `speak:22, les deux petits canards${NB}!`]);
   });
 
   it('AC-21: says nothing with the voice off', () => {

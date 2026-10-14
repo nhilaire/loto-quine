@@ -20,8 +20,8 @@ describe('nicknames (AC-21, AC-23, AC-30, AC-31)', () => {
 
   it('AC-21: plain announcement with nicknames off, nickname with them on', () => {
     expect(announcement(22, false)).toEqual({ spoken: `22${NB}!`, nickname: null });
-    expect(announcement(22, true)).toEqual({ spoken: `22, les deux cocottes${NB}!`, nickname: 'les deux cocottes' });
-    expect(announcement(47, true)).toEqual({ spoken: `47${NB}!`, nickname: null });
+    expect(announcement(22, true)).toEqual({ spoken: `22, les deux petits canards${NB}!`, nickname: 'les deux petits canards' });
+    expect(announcement(46, true)).toEqual({ spoken: `46${NB}!`, nickname: null });
   });
 
   it('AC-23: the nickname shown equals the spoken one', () => {

@@ -1,40 +1,52 @@
 # Nickname review sheet (AC-31)
 
-List of loto nicknames announced when « Surnoms » is on. Numbers not listed are announced plainly
-(« 47 ! »). Approved by the user on 2026-10-14, who added 1 « le petit » and 67 « six-seven »; the app data is `src/game/nicknames.ts` and a
-test checks that this sheet lists every nickname.
+Traditional loto nicknames announced when « Surnoms » is on. Numbers not listed are announced plainly (« 46 ! »).
+The app data is `src/game/nicknames.ts`; a test checks that this sheet lists every nickname.
 
-Origin: **shape** = traditional loto call based on the digits' shape; **meaning** = a well-known French
-association with the number (calendar, history, sayings, tales).
+Decision (user, 2026-10-14): keep the nicknames confirmed by at least two independent sources, family-friendly
+(no « le pastis », « les culs blancs » or bawdy calls), plus 1 « le petit » and 67 « six-seven » chosen by the user.
+There is no official national list: calls vary by region and caller; most sources come from southern France.
 
-| Ball | Nickname | Origin | Approved |
+Sources:
+- **A**: Association Modèle, « Quelques commentaires pour le nommeur de loto provençal »,
+  https://association-modele.fr/wp-content/uploads/2019/01/expressions-au-loto.doc (1-90)
+- **L**: Lotopassion, « Liste des numéros de l'univers du loto »,
+  https://www.lotopassion.com/info-pratique/910-liste-des-numeros-de-l-univers-du-loto (1-90)
+- **B**: Bingofr, « Les expressions au loto bingo », https://www.bingofr.com/loto-bingo/les-expressions-au-loto-bingo/
+- **P**: Je parle provençal, « Les expressions du loto en provençal »,
+  https://jeparleprovencal.fr/les-expressions-du-loto-en-provencal/ (French glosses)
+- **F**: forum threads (projetbabel.org, forum.tomshardware.fr) for 22 « les deux petits canards »
+
+| Ball | Nickname | Sources | Approved |
 |---|---|---|---|
-| 1 | le petit | added by the user | yes |
-| 2 | le petit canard | shape | yes |
-| 3 | les trois petits cochons | meaning (tale) | yes |
-| 4 | les quatre saisons | meaning | yes |
-| 5 | les cinq doigts de la main | meaning | yes |
-| 7 | les sept nains | meaning (tale) | yes |
-| 8 | le bonhomme de neige | shape | yes |
-| 9 | tout neuf | wordplay | yes |
-| 10 | les dix doigts | meaning | yes |
-| 11 | les deux jambes | shape | yes |
-| 12 | la douzaine | meaning | yes |
-| 13 | le porte-bonheur | meaning | yes |
-| 14 | la fête nationale | meaning (14 juillet) | yes |
-| 18 | la majorité | meaning | yes |
-| 20 | vingt sur vingt | meaning | yes |
-| 22 | les deux cocottes | shape | yes |
-| 24 | les heures de la journée | meaning | yes |
-| 25 | Noël | meaning (25 décembre) | yes |
-| 31 | le réveillon | meaning (31 décembre) | yes |
-| 33 | l'âge du Christ | meaning (traditional) | yes |
-| 36 | les trente-six chandelles | saying | yes |
-| 40 | la quarantaine | meaning | yes |
-| 44 | les deux chaises | shape | yes |
-| 67 | six-seven | added by the user | yes |
-| 77 | les deux drapeaux | shape | yes |
-| 80 | le tour du monde | meaning (Jules Verne) | yes |
-| 88 | les deux bonshommes de neige | shape | yes |
-| 89 | la Révolution | meaning (1789) | yes |
-| 90 | le pépé | traditional | yes |
+| 1 | le petit | A, L, B; added by the user | yes |
+| 2 | ils font la paire | A, L | yes |
+| 4 | la chaise | A, L, P | yes |
+| 5 | la pleine main | A, L, B, P | yes |
+| 6 | le facteur part en tournée | A, B | yes |
+| 7 | la semaine | A, P | yes |
+| 8 | la cacahuète | A, L | yes |
+| 9 | le facteur revient de tournée | A, B | yes |
+| 10 | disputez-vous | A, L | yes |
+| 11 | les jambes de ma grand-mère | A, L, P | yes |
+| 12 | lève la blouse | A, B | yes |
+| 14 | l'homme fort | A, L | yes |
+| 18 | la majorité | A, L | yes |
+| 20 | sans eau | A, L, B, P | yes |
+| 21 | l'ancienne majorité | A, L | yes |
+| 22 | les deux petits canards | L, F | yes |
+| 25 | Noël | A, L, P | yes |
+| 29 | les chapeaux ronds | A, B | yes |
+| 31 | les violettes | A, L | yes |
+| 33 | l'âge du Christ | A, L | yes |
+| 36 | les chandelles | A, L | yes |
+| 37 | la bonne température | A, L | yes |
+| 45 | la moitié du jeu | A, L | yes |
+| 47 | les pruneaux | A, L | yes |
+| 65 | les miracles | A, L | yes |
+| 67 | six-seven | chosen by the user (sources: les saucisses) | yes |
+| 80 | dans un coin | A, L | yes |
+| 87 | la porcelaine | A, L | yes |
+| 88 | les deux cacahuètes | A (L, P: les deux courges) | yes |
+| 89 | la mamé | A, L, P | yes |
+| 90 | le papé | A, L, P | yes |

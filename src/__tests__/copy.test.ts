@@ -5,7 +5,7 @@ import { typographyProblems } from '../i18n/typography';
 function strings(node: unknown, out: string[] = []): string[] {
   if (typeof node === 'string') out.push(node);
   else if (typeof node === 'function') {
-    for (const n of [0, 1, 2, 47]) out.push(String((node as (...a: unknown[]) => unknown)(n, n === 0 ? 'les deux cocottes' : n)));
+    for (const n of [0, 1, 2, 47]) out.push(String((node as (...a: unknown[]) => unknown)(n, n === 0 ? 'les deux petits canards' : n)));
   } else if (node && typeof node === 'object') Object.values(node).forEach((v) => strings(v, out));
   return out;
 }
