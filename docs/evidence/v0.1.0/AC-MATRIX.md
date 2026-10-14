@@ -3,8 +3,10 @@
 Produced by the `verifier` agent from the PRD and the evidence of this version. One row per acceptance criterion.
 Result is `PASS`, `FAIL` or `NOT PROVEN`. Evidence must be a concrete pointer (test name, flow + screenshot, report line).
 
-Verified on commit 85ddab8 (REPORT.md Overall PASS). Summary: 37 PASS, 0 FAIL, 0 NOT PROVEN, 2 PENDING RELEASE
-(AC-28 arm64 size, AC-32 phone test). The agent's own summary line said "35 PASS"; its rows below count 37.
+Rows AC-01 to AC-39 by the verifier agent on commit 85ddab8; the agent's own summary line said "35 PASS", its rows count 37.
+Re-verified on commit d122c5c (REPORT.md Overall PASS, Jest 110/110, 11/11 flows, no crash, telemetry seen; DEVICE-CHECKS.md
+re-run on the same build with identical results). Commits after 85ddab8 only rename the check (AC-40, phone test feedback);
+the AC-40 row was added on d122c5c. Summary: 38 PASS, 0 FAIL, 0 NOT PROVEN, 2 PENDING RELEASE (AC-28 arm64 size, AC-32).
 
 | AC | Criterion (short) | Proof type | Evidence | Result |
 |---|---|---|---|---|
@@ -47,3 +49,4 @@ Verified on commit 85ddab8 (REPORT.md Overall PASS). Summary: 37 PASS, 0 FAIL, 0
 | AC-37 | 90 balls: « Toutes les boules sont sorties », draw disabled, Check still opens, no FATAL | e2e | .maestro/all-balls.yaml (lotoquine://seed/42/drawn/88 aid, allowed by the PRD amendment): "Boule n°90", "Toutes les boules sont sorties", game-draw enabled:false, game-check then check-screen visible; maestro.txt Passed; screens/90-all-balls.png; no FATAL per REPORT step 12 and raw/logcat-e2e.txt | PASS |
 | AC-38 | k tied numbers distinct in 1-90, highest wins, reproducible, main draw unchanged | unit | tieBreak.test.ts "gives k distinct numbers in 1-90 and the highest wins" (k = 2..10), "is reproducible for the same game state and differs with the stage", "does not change the main draw"; passed | PASS |
 | AC-39 | 2-winner tie-break names the higher number; Valider opens the Win choice | e2e | .maestro/tie-break.yaml: tie-count "2", tie-draw-1/2, tie-winner "Le joueur [12] gagne avec le [0-9]+ !", tie-validate, "Continuer le tirage"; maestro.txt Passed; screens/95-tie-break.png: Joueur 1 = 31, Joueur 2 = 48, "Le joueur 2 gagne avec le 48 !" (the higher number); screens.test.tsx "AC-39" asserts the exact winner | PASS |
+| AC-40 | check named after the stage: Game button « Vérifier », Check title and hint per stage | unit | copy.test.ts "names what is checked and which rows to enter" (exact titles and hints for the 3 stages); screens.test.tsx "AC-15" (check-title « Vérifier une quine », « Saisis seulement la ligne gagnante. », then game-check « Vérifier » and check-title « Vérifier une double quine »); .maestro flows assert check-title « Vérifier une quine » (check-win-continue, new-draw, tie-break; maestro.txt Passed on d122c5c); screens/20-check-win.png | PASS |
