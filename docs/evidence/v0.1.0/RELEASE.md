@@ -1,11 +1,11 @@
 # Release: Loto Quine v0.1.0
 
 Phone install: PASS
-User acceptance: pending
+User acceptance: confirmed (2026-10-15)
 Date: 2026-10-14
-Commit: 0d9305a
+Commit: 09a190a
 APK: loto-quine-0.1.0-arm64-v8a.apk (33.8 MB, arm64-v8a)
-SHA-256: 489de54e9f4f0950509fb3c7988850d74525ca62d0679777f282fa922cc50ed1
+SHA-256: 6e39d43c739608368e9d58929e74536456162eb09bb9f2ac9791f5f7eed73c9b
 Signature: release signature valid
 Phone: Android 11 (API 30, arm64-v8a)
 Launch check: alive after 10 s, no fatal error
@@ -20,3 +20,4 @@ Launch check: alive after 10 s, no fatal error
 - 2026-10-14, second install (commit 0d9305a): « pour six-seven, on entend vraiment six en français, il faudrait
   entendre sixe ». Fix chosen by the user: the voice reads « sixe sévène », the screen still shows « six-seven »
   (AC-23 amended).
+- 2026-10-15, third install (commit 09a190a): user acceptance « allez, ça ira ».
