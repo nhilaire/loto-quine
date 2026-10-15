@@ -37,7 +37,7 @@ export function HomeScreen({ hasGame, onNewGame, onResume, onRules, onSettings, 
           <Button label={fr.home.settings} onPress={onSettings} variant="secondary" testID="home-settings" />
         </View>
       </View>
-      <Button label={fr.home.about} onPress={onAbout} variant="ghost" testID="home-about" />
+      <Button label={fr.home.about} onPress={onAbout} variant="secondary" testID="home-about" />
     </Screen>
   );
 }
