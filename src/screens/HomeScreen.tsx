@@ -7,9 +7,16 @@ import { Button } from '../ui/Button';
 import { Screen } from '../ui/Screen';
 import { colors, font, spacing } from '../ui/theme';
 
-type Props = { hasGame: boolean; onNewGame: () => void; onResume: () => void; onRules: () => void; onSettings: () => void };
+type Props = {
+  hasGame: boolean;
+  onNewGame: () => void;
+  onResume: () => void;
+  onRules: () => void;
+  onSettings: () => void;
+  onAbout: () => void;
+};
 
-export function HomeScreen({ hasGame, onNewGame, onResume, onRules, onSettings }: Props) {
+export function HomeScreen({ hasGame, onNewGame, onResume, onRules, onSettings, onAbout }: Props) {
   const { width } = useWindowDimensions();
   return (
     <Screen testID="home-screen">
@@ -30,6 +37,7 @@ export function HomeScreen({ hasGame, onNewGame, onResume, onRules, onSettings }
           <Button label={fr.home.settings} onPress={onSettings} variant="secondary" testID="home-settings" />
         </View>
       </View>
+      <Button label={fr.home.about} onPress={onAbout} variant="ghost" testID="home-about" />
     </Screen>
   );
 }

@@ -8,6 +8,7 @@ import { GameAction, GameState, WinChoice, lastBall, newGame, reduce } from './g
 import { randomSeed, seedFrom } from './game/random';
 import { TrackCall, startEvents, transitionEvents } from './game/telemetryRules';
 import { fr } from './i18n/fr';
+import { AboutScreen } from './screens/AboutScreen';
 import { CheckScreen } from './screens/CheckScreen';
 import { ConsentScreen } from './screens/ConsentScreen';
 import { GameOverScreen } from './screens/GameOverScreen';
@@ -24,7 +25,7 @@ import { Dialog } from './ui/Dialog';
 import { ErrorBoundary } from './ui/ErrorBoundary';
 import { colors } from './ui/theme';
 
-type Route = 'home' | 'game' | 'check' | 'over' | 'rules' | 'settings';
+type Route = 'home' | 'game' | 'check' | 'over' | 'rules' | 'settings' | 'about';
 type Confirm = null | 'end' | 'replace';
 
 function send(calls: TrackCall[]): void {
@@ -32,7 +33,7 @@ function send(calls: TrackCall[]): void {
 }
 
 // Back navigation for Android (dialogs handle back themselves through Modal.onRequestClose).
-const BACK: Partial<Record<Route, Route>> = { game: 'home', check: 'game', over: 'home', rules: 'home', settings: 'home' };
+const BACK: Partial<Record<Route, Route>> = { game: 'home', check: 'game', over: 'home', rules: 'home', settings: 'home', about: 'home' };
 
 export default function App() {
   const [loaded, setLoaded] = useState(false);
@@ -200,6 +201,8 @@ export default function App() {
     );
   } else if (route === 'over' && finished) {
     content = <GameOverScreen game={finished} now={Date.now()} onNewGame={startGame} onHome={() => setRoute('home')} />;
+  } else if (route === 'about') {
+    content = <AboutScreen onBack={() => setRoute('home')} />;
   } else if (route === 'rules') {
     content = <RulesScreen onBack={() => setRoute('home')} />;
   } else if (route === 'settings') {
@@ -219,6 +222,7 @@ export default function App() {
         onNewGame={() => (game ? setConfirm('replace') : startGame())}
         onResume={() => setRoute('game')}
         onRules={() => setRoute('rules')}
+        onAbout={() => setRoute('about')}
         onSettings={() => setRoute('settings')}
       />
     );

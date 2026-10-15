@@ -4,7 +4,7 @@ Status: approved
 Project slug: loto-quine
 Final app name: Loto Quine
 Android package: io.github.nhilaire.lotoquine
-Version target: 0.1.0
+Version target: 0.1.1
 Last updated: 2026-10-14
 
 > Written in English. Player-facing French copy is quoted in the "French copy" section.
@@ -78,6 +78,8 @@ French pitch: « Ton animateur de loto dans la poche : tire les boules, annonce-
 - **Game over** (after carton plein is validated, or « Terminer la partie » confirmed): « Partie terminée ! » (or
   « Partie arrêtée » when ended early), balls drawn in the last draw and game duration; « Nouvelle partie »,
   « Accueil ».
+- **About** (« À propos », from Home, v0.1.1): the story of the game, « Un mot de l'auteur » (made on free time by
+  a passionate developer, bugs possible, thanks for indulgence), « Tes données », version; « Retour » to Home.
 - **Rules**: one scrollable page explaining the three stages and how to check a card.
 - **Settings** (« Paramètres »): Voix, Surnoms, Sons, Vibrations, Statistiques anonymes (toggles).
 - Confirmation dialogs: « Terminer la partie ? » and, when « Nouvelle partie » is tapped with a game in progress,
@@ -347,6 +349,9 @@ phone or emulator, `[manual]` human judgement (kept rare).
   reads « Vérifier une quine » / « Vérifier une double quine » / « Vérifier un carton plein » and the
   hint reads « Saisis seulement la ligne gagnante. » / « Saisis seulement les 2 lignes gagnantes. » / « Saisis les 3
   lignes du carton. ».
+- AC-41 [e2e] Given Home, when « À propos » is tapped, then the About screen shows « L'histoire de ce jeu » with the
+  school-loto story, « Un mot de l'auteur » (développeur passionné, bugs possible), « Tes données » and the app
+  version; « Retour » goes back to Home.
 - AC-31 [manual] Given the nickname list, when the user reviews it before release, then every nickname is approved
   as traditional and family-friendly.
 - AC-32 [manual] Given the release APK on the user's phone, when a family game is played, then the number is readable
@@ -420,6 +425,15 @@ Tone: tu. French typography: no-break space before « : ; ! ? » and inside « �
 | over.duration | Durée : {n} min |
 | rules.title | Règles |
 | rules.body | Chaque joueur a un ou plusieurs cartons de 3 lignes de 5 numéros. Quand un numéro sort, marque-le sur ton carton. Quine : le premier à compléter une ligne crie « Quine ! ». Double quine : deux lignes complètes. Carton plein : les trois lignes. L'animateur vérifie avec « Vérifier une quine » (puis double quine, carton plein) : on ne saisit que les lignes gagnantes. S'il y a plusieurs gagnants sur la même boule, chacun tire un numéro : le plus haut gagne. |
+| home.about | À propos |
+| about.title | À propos |
+| about.storyTitle | L'histoire de ce jeu |
+| about.story | Petit, j'allais parfois au loto de l'école : la salle pleine, les cartons, les jetons, l'animateur qui annonçait les boules avec leurs surnoms, et ce petit silence avant que quelqu'un crie « Quine ! ». J'ai voulu retrouver cette ambiance à la maison, pour jouer en famille avec mes enfants, sans boulier ni sac de boules. |
+| about.authorTitle | Un mot de l'auteur |
+| about.author | Ce jeu ne sort pas d'un studio : je l'ai imaginé et programmé sur mon temps libre, en développeur passionné, sans prétention. Il est donc perfectible et sans doute pas exempt de bugs. Si une boule fait des siennes ou si la voix écorche un surnom, merci d'avance pour ton indulgence. Et surtout : bonne partie ! |
+| about.dataTitle | Tes données |
+| about.data | Aucun compte, aucune publicité. Des statistiques anonymes (parties jouées, étapes gagnées, plantages) ne sont envoyées que si tu l'as accepté. Tu peux changer d'avis dans les paramètres. |
+| about.version | Version {version} |
 | settings.title | Paramètres |
 | settings.voice | Voix |
 | settings.nicknames | Surnoms |
@@ -435,6 +449,9 @@ n ≥ 2 (French rule).
 Amendment 2026-10-14 (phone test, decided by the user): « Vérifier un carton » suggested a full card had to be
 entered. The check is now named after the stage and tells which rows to enter (only the winning ones); the 3-row grid
 is kept (user choice « juste renommer »); the Game button is simply « Vérifier » (user request). New AC-40.
+
+Amendment 2026-10-15, version 0.1.1 (requested by the user, texts approved by the user): « À propos » screen from
+Home with the story of the game, a word from the author and the player's data. New AC-41.
 
 ## Out of scope
 

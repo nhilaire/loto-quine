@@ -164,6 +164,23 @@ export const FLOWS = {
     ...see('Carton plein : les trois lignes.'),
     ...shot('80-rules'),
   ]),
+  'about.yaml': flow('About screen tells the story, the word from the author and the version (AC-41)', ['e2e'], [
+    ...fresh(),
+    ...tap('consent-refuse'),
+    ...tap('home-about'),
+    ...seeId('about-screen'),
+    ...see("L'histoire de ce jeu"),
+    ...see('.*loto de l.école.*'),
+    ...see("Un mot de l'auteur"),
+    ...shot('85-about'),
+    '- scrollUntilVisible:',
+    '    element: "Version 0.1.1"',
+    '    timeout: 20000',
+    ...see('Version 0.1.1'),
+    ...shot('86-about-end'),
+    ...tap('about-back'),
+    ...seeId('home-screen'),
+  ]),
   'all-balls.yaml': flow('Draw all 90 balls, drawing disabled, a card can still be checked (AC-37)', ['e2e'], [
     // The game starts with 88 balls drawn by the engine (testing aid), the last 2 are drawn by hand.
     ...start('refuse', 88).filter((l) => !l.includes('Touche la boule')),

@@ -343,4 +343,17 @@ describe('screens and navigation', () => {
       setFeedback(null);
     }
   });
+  it('AC-41: Home « À propos » shows the story, the word from the author, the data and the version', async () => {
+    await AsyncStorage.setItem('telemetry.consent.v1', 'denied');
+    await render(<App />);
+    await fireEvent.press(await screen.findByTestId('home-about'));
+    expect(screen.getByTestId('about-screen')).toBeTruthy();
+    expect(screen.getByText(/loto de l'école/)).toBeTruthy();
+    expect(screen.getByText(/développeur passionné/)).toBeTruthy();
+    expect(screen.getByText(/pas exempt de bugs/)).toBeTruthy();
+    expect(screen.getByText(/Aucun compte, aucune publicité/)).toBeTruthy();
+    expect(screen.getByText('Version 0.1.1')).toBeTruthy();
+    await fireEvent.press(screen.getByTestId('about-back'));
+    expect(screen.getByTestId('home-screen')).toBeTruthy();
+  });
 });

@@ -24,6 +24,30 @@ export const fr = {
     resume: 'Reprendre la partie',
     rules: 'Règles',
     settings: 'Paramètres',
+    about: 'À propos',
+  },
+  // « À propos » (AC-41), texts approved by the user on 2026-10-15.
+  about: {
+    title: 'À propos',
+    storyTitle: "L'histoire de ce jeu",
+    story: [
+      `Petit, j'allais parfois au loto de l'école${N}: la salle pleine, les cartons, les jetons, l'animateur qui ` +
+        `annonçait les boules avec leurs surnoms, et ce petit silence avant que quelqu'un crie «${N}Quine${N}!${N}». ` +
+        "J'ai voulu retrouver cette ambiance à la maison, pour jouer en famille avec mes enfants, sans boulier ni sac de boules.",
+    ],
+    authorTitle: "Un mot de l'auteur",
+    author: [
+      `Ce jeu ne sort pas d'un studio${N}: je l'ai imaginé et programmé sur mon temps libre, en développeur passionné, sans prétention.`,
+      "Il est donc perfectible et sans doute pas exempt de bugs. Si une boule fait des siennes ou si la voix écorche un " +
+        `surnom, merci d'avance pour ton indulgence. Et surtout${N}: bonne partie${N}!`,
+    ],
+    dataTitle: 'Tes données',
+    data: [
+      "Aucun compte, aucune publicité. Des statistiques anonymes (parties jouées, étapes gagnées, plantages) ne sont " +
+        "envoyées que si tu l'as accepté. Tu peux changer d'avis dans les paramètres.",
+    ],
+    version: (version: string) => `Version ${version}`,
+    back: 'Retour',
   },
   stage: {
     quine: 'Quine',
