@@ -3,7 +3,10 @@
 Produced by the `verifier` agent from the PRD and the evidence of this version. One row per acceptance criterion.
 Result is `PASS`, `FAIL` or `NOT PROVEN`. Evidence must be a concrete pointer (test name, flow + screenshot, report line).
 
-Verified on commit e4dbf39 (REPORT.md Overall PASS). Summary: 39 PASS, 0 FAIL, 0 NOT PROVEN, 2 PENDING RELEASE
+Rows by the verifier agent on commit e4dbf39. Re-verified on commit f947bb1 (only change: the « À propos » Home button
+is framed, phone test feedback): REPORT.md Overall PASS, Jest 112/112, 12/12 flows, no crash, telemetry seen;
+DEVICE-CHECKS.md re-run on that build (AC-35: events of the previous consented session before the fresh install are
+separated, 0 after « Refuser »). Summary: 39 PASS, 0 FAIL, 0 NOT PROVEN, 2 PENDING RELEASE
 (AC-28 arm64 size, AC-32 phone test). expo-doctor WARN (expo 57.0.28 vs ~57.0.29, expo-asset 57.0.19 vs ~57.0.20)
 affects no criterion.
 
@@ -43,7 +46,7 @@ affects no criterion.
 | AC-32 | on the user's phone: number readable, voice intelligible, screen on, polished | manual | needs the phone test of the v0.1.1 release APK; no v0.1.1 evidence yet | PENDING RELEASE |
 | AC-33 | back on Win choice changes nothing; stage/stage_won only on a choice; pending win survives restore | unit | screens.test.tsx "AC-33: Android back on the win choice changes nothing" (stage Quine, only game_start logged); game.test.ts "AC-33: the stage advances only when a choice is made"; telemetryRules.test.ts "stage_won is sent when the choice is made" (validateWin calls = []); persistence.test.ts "AC-33: keeps a pending win"; raw/jest.txt PASS | PASS |
 | AC-34 | singular/plural for missing count and balls drawn | unit | copy.test.ts "AC-34: singular for 0 and 1, plural from 2" (exact strings for 1, 2 missing; 0, 1, 5 balls); raw/jest.txt PASS | PASS |
-| AC-35 | Analytics/Crashlytics off by default; nothing logged/uploaded after « Refuser » | device | DEVICE-CHECKS.md AC-35; raw/device-manifest.txt firebase_analytics_collection_enabled=false, firebase_crashlytics_collection_enabled=false, adid/ssaid=false; raw/device-refuse-logcat.txt "App measurement disabled via the manifest", "Event not sent since app measurement is disabled", 0 lines matching "Logging event"/"upload" | PASS |
+| AC-35 | Analytics/Crashlytics off by default; nothing logged/uploaded after « Refuser » | device | DEVICE-CHECKS.md AC-35; raw/device-manifest.txt firebase_analytics_collection_enabled=false, firebase_crashlytics_collection_enabled=false, adid/ssaid=false; raw/device-refuse-logcat.txt (f947bb1 build) from the fresh install on: "App measurement disabled via the manifest", consent denied, 0 lines matching "Logging event"/"upload"; lines 12-14 belong to the previous consented session closed by clearState (DEVICE-CHECKS.md) | PASS |
 | AC-36 | FLAG_KEEP_SCREEN_ON on Game and Check, not on Home | device | DEVICE-CHECKS.md AC-36; raw/device-keep-awake.txt CHECK and GAME "fl=KEEP_SCREEN_ON ...", HOME "fl=LAYOUT_IN_SCREEN ..." without KEEP_SCREEN_ON | PASS |
 | AC-37 | 90 balls: « Toutes les boules sont sorties », draw disabled, Check opens, no FATAL | e2e | .maestro/all-balls.yaml (seed 42 deep link starting at 88 balls drawn, as accepted in the PRD): draws 89 and 90, assertVisible "Toutes les boules sont sorties", game-draw enabled: false, game-check then check-screen; raw/maestro.txt passed; screens/90-all-balls.png; no FATAL: REPORT.md step 12 (same caveat as AC-29) | PASS |
 | AC-38 | tie-break: k distinct numbers 1-90, highest wins, reproducible, main draw unchanged | unit | tieBreak.test.ts "gives k distinct numbers in 1-90 and the highest wins" (k = 2..10), "is reproducible for the same game state ...", "does not change the main draw"; raw/jest.txt PASS | PASS |

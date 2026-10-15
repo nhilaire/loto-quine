@@ -1,7 +1,7 @@
 # Device checks: Loto Quine v0.1.1
 
-Manual commands run on 2026-10-15 against the release APK of commit e4dbf39, the same build as REPORT.md
-(`dist/loto-quine-0.1.1-universal.apk`, SHA-256 944d2a383888a831...), on emulator sdk_gphone64_x86_64, Android 16
+Manual commands run on 2026-10-15 against the release APK of commit f947bb1, the same build as REPORT.md
+(`dist/loto-quine-0.1.1-universal.apk`, SHA-256 86832d64fdd421b1...), on emulator sdk_gphone64_x86_64, Android 16
 (API 36). Raw outputs are in `raw/` (local, git-ignored): `device-permissions.txt`, `device-manifest.txt`,
 `device-refuse-logcat.txt`, `device-keep-awake.txt`.
 
@@ -33,11 +33,15 @@ google_analytics_ssaid_collection_enabled = false
 
 Fresh install (`clearState`), « Refuser », « Nouvelle partie », one ball drawn, « Vérifier un carton », back twice,
 then 20 s wait, with `debug.firebase.analytics.app` set and `log.tag.FA` / `log.tag.FA-SVC` VERBOSE;
-`adb logcat -d -s FA FA-SVC FirebaseCrashlytics` (52 lines, raw/device-refuse-logcat.txt):
+`adb logcat -d -s FA FA-SVC FirebaseCrashlytics` (raw/device-refuse-logcat.txt):
 
-- `I FA : App measurement disabled via the manifest`
-- `V FA : Setting storage consent(FE): source=MANIFEST,ad_storage=denied,analytics_storage=denied`
-- lines containing « Logging event »: **0**; lines containing « upload » (any case): **0**
+- lines 12-14 (14:34:40.092-.194, Play services process 1499): `user_engagement` and an upload scheduling. They are
+  logged while Maestro's `clearState` closes the previous session (the telemetry flow of the verify run, where
+  consent was accepted), before the fresh install starts (process 2043, first line 14:34:42.508).
+- from the fresh start (line 25 on, 48 lines): `I FA : App measurement disabled via the manifest`,
+  `Setting storage consent(FE): source=MANIFEST,ad_storage=denied,analytics_storage=denied`, then
+  `source=API ... analytics_storage=denied` after « Refuser »; lines containing « Logging event »: **0**;
+  lines containing « upload » (any case): **0**
 
 After « Accepter », REPORT.md shows game_start, stage_won, game_end in logcat.
 
