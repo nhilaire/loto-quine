@@ -16,7 +16,7 @@ Loto Quine turns an Android phone into the host (« l'animateur ») of a family 
 paper cards and tokens; the phone draws the balls 1 to 90 without replacement, shows each ball big with a short
 rolling animation, announces it aloud in French (optionally with the traditional loto nickname), keeps the 1-90 board
 of drawn numbers, follows the three classic stages (quine, double quine, carton plein) and checks a claimed card when
-someone shouts « Quine ! ». It replaces an earlier C# console prototype (`C:/dev/loto/Program.cs`) with the same rules
+someone shouts « Quine ! ». It replaces an earlier, unpublished C# console prototype with the same rules
 and a much more polished, warm village-hall look.
 
 French pitch: « Ton animateur de loto dans la poche : tire les boules, annonce-les et vérifie les cartons ! »

@@ -17,7 +17,7 @@ Final app name: Loto Quine
 
 The earlier conversation transcript was deleted; its session index (2026-01-25) keeps the first prompt: "a C# console
 program that reproduces a loto draw. Draw a random number between 1 and 99 (inclusive), display it, pause, draw
-another...". The surviving code (`C:/dev/loto/Program.cs`, console app "LOTO QUINE") implements:
+another...". The surviving code (an earlier, unpublished C# console app "LOTO QUINE") implements:
 
 1. Numbers 1-90 drawn without replacement (the code settled on 90, not 99).
 2. Each draw shows its order and value ("Boule n°12 : 47"); a key press draws the next.
@@ -96,7 +96,7 @@ Mark assumptions the user accepted as `(default accepted)`.
 ## Decisions taken during discovery
 
 - The app is a **caller (host) app**, not a card game: players keep paper cards; the phone draws, announces and checks.
-- Rules recovered from the prior C# console version (`C:/dev/loto/Program.cs`): 1-90 without replacement, ball order
+- Rules recovered from the prior C# console version (unpublished): 1-90 without replacement, ball order
   number shown, sorted list of drawn numbers, card check listing found/missing numbers.
 - Improvements over the prior version: polished warm visual style, rolling-ball animation, 1-90 board, French voice with
   optional nicknames, three game stages, card check by row on a 3 x 5 card, exact resume, screen kept on.
