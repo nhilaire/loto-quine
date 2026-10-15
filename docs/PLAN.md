@@ -20,6 +20,8 @@ Format: `- [ ] T-01 Title (AC-01, AC-02) - proof: unit|e2e|device`. Check the bo
 - [x] T-13 Deep link lotoquine://seed/<n> (in-memory seed for the next new game) (AC-13, AC-14, AC-15) - proof: unit
 - [x] T-14 Maestro flows: smoke (consent refuse + relaunch), draw 3 balls, resume after kill, check win + continue, check not yet, new draw, stop, replace confirm, settings persistence, rules, 90 balls, tie-break, telemetry consent (AC-01, AC-02, AC-13, AC-14, AC-15, AC-16, AC-17, AC-18, AC-19, AC-20, AC-24, AC-27, AC-37, AC-39) - proof: e2e
 - [x] T-15 Release readiness: app icon and splash (self-made ball), TTS package-visibility query, no RECORD_AUDIO / AD_ID, APK size, cold start (AC-28, AC-29, AC-35, AC-36) - proof: device
+- [x] T-16 Phone test feedback: Game button « Vérifier », Check title and hint named after the stage (AC-40) - proof: unit
+- [x] T-17 Phone test feedback: 67 « six-seven » spoken « sixe sévène » by the French voice (AC-23, AC-21) - proof: unit
 
 ## Notes
 
