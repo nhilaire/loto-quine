@@ -22,7 +22,7 @@ Format: `- [ ] T-01 Title (AC-01, AC-02) - proof: unit|e2e|device`. Check the bo
 - [x] T-15 Release readiness: app icon and splash (self-made ball), TTS package-visibility query, no RECORD_AUDIO / AD_ID, APK size, cold start (AC-28, AC-29, AC-35, AC-36) - proof: device
 - [x] T-16 Phone test feedback: Game button « Vérifier », Check title and hint named after the stage (AC-40) - proof: unit
 - [x] T-17 Phone test feedback: 67 « six-seven » spoken « sixe sévène » by the French voice (AC-23, AC-21) - proof: unit
-- [ ] T-18 v0.1.1 « À propos » screen: story, word from the author, data, version; Home link; Maestro flow (AC-41) - proof: e2e
+- [x] T-18 v0.1.1 « À propos » screen: story, word from the author, data, version; Home link; Maestro flow (AC-41) - proof: e2e
 
 ## Notes
 
