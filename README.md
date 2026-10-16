@@ -2,6 +2,16 @@
 
 A small Android game made with React Native. The game is in French.
 
+## Screenshots
+
+<!-- factory:screenshots:start -->
+<p>
+  <img src="docs/screenshots/readme-1-home.png" width="240" alt="home">
+  <img src="docs/screenshots/readme-2-draw.png" width="240" alt="draw">
+  <img src="docs/screenshots/readme-3-check-win.png" width="240" alt="check win">
+</p>
+<!-- factory:screenshots:end -->
+
 ## Play
 
 Download the APK attached to the latest release (if any) or build it yourself (below), then install it on an
