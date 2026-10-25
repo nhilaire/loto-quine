@@ -5,5 +5,13 @@
   "stack": "expo",
   "description": "Family loto (quine) caller: draws numbers 1-90 like a bingo hall host",
   "language": "fr-FR",
-  "factoryVersion": "1.0.0"
+  "factoryVersion": "1.0.0",
+  "languages": [
+    "fr",
+    "en"
+  ],
+  "fallbackLanguage": "en",
+  "displayNames": {
+    "en": "Loto Quine"
+  }
 }

@@ -1,4 +1,4 @@
-# Plan: Loto Quine v0.1.1
+# Plan: Loto Quine v0.2.0
 
 Each task is small (one commit), references the acceptance criteria it serves, and names its proof.
 Format: `- [ ] T-01 Title (AC-01, AC-02) - proof: unit|e2e|device`. Check the box only when the proof passes.
@@ -23,6 +23,10 @@ Format: `- [ ] T-01 Title (AC-01, AC-02) - proof: unit|e2e|device`. Check the bo
 - [x] T-16 Phone test feedback: Game button « Vérifier », Check title and hint named after the stage (AC-40) - proof: unit
 - [x] T-17 Phone test feedback: 67 « six-seven » spoken « sixe sévène » by the French voice (AC-23, AC-21) - proof: unit
 - [x] T-18 v0.1.1 « À propos » screen: story, word from the author, data, version; Home link; Maestro flow (AC-41) - proof: e2e
+- [ ] T-19 Language core: i18n index (resolveLanguage, fallback en), Strings type, I18nProvider, expo-localization device languages, language setting store, per-language formatter and plurals (AC-42) - proof: unit
+- [ ] T-20 English dictionary and English bingo calls; announcements and voice language per game language (fr-FR / en-GB) (AC-21, AC-23, AC-44) - proof: unit
+- [ ] T-21 Screens read the current language (useI18n), Settings language choice, App wiring, launcher name per language in app.config.js (AC-42, AC-43, AC-45) - proof: unit
+- [ ] T-22 Maestro: flows pin French through the settings, new language flow with screenshots (AC-43) - proof: e2e
 
 ## Notes
 
