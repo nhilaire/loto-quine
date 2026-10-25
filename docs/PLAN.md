@@ -26,7 +26,7 @@ Format: `- [ ] T-01 Title (AC-01, AC-02) - proof: unit|e2e|device`. Check the bo
 - [x] T-19 Language core: i18n index (resolveLanguage, fallback en), Strings type, I18nProvider, expo-localization device languages, language setting store, per-language formatter and plurals (AC-42) - proof: unit
 - [x] T-20 English dictionary and English bingo calls; announcements and voice language per game language (fr-FR / en-GB) (AC-21, AC-23, AC-44) - proof: unit
 - [x] T-21 Screens read the current language (useI18n), Settings language choice, App wiring, launcher name per language in app.config.js (AC-42, AC-43, AC-45) - proof: unit
-- [ ] T-22 Maestro: flows pin French through the settings, new language flow with screenshots (AC-43) - proof: e2e
+- [x] T-22 Maestro: flows pin French through the settings, new language flow with screenshots (AC-43) - proof: e2e
 
 ## Notes
 

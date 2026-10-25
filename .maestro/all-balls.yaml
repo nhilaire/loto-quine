@@ -12,6 +12,7 @@ tags:
 - openLink: "lotoquine://seed/42/drawn/88"
 - tapOn:
     id: "consent-refuse"
+- runFlow: helpers/french.yaml
 - tapOn:
     id: "home-new-game"
 - assertVisible: "Boule n°88"

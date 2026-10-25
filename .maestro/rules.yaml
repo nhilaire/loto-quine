@@ -11,6 +11,7 @@ tags:
     timeout: 20000
 - tapOn:
     id: "consent-refuse"
+- runFlow: helpers/french.yaml
 - tapOn:
     id: "home-rules"
 - assertVisible: "Quine : le premier à compléter une ligne.*"

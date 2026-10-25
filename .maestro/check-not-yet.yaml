@@ -12,6 +12,7 @@ tags:
 - openLink: "lotoquine://seed/42"
 - tapOn:
     id: "consent-refuse"
+- runFlow: helpers/french.yaml
 - tapOn:
     id: "home-new-game"
 - assertVisible: "Touche la boule pour commencer"

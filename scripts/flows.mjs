@@ -20,15 +20,20 @@ const nb = (text) => text.replace(/ ([!?:])/g, ' $1');
 const tap = (id) => [`- tapOn:`, `    id: "${id}"`];
 const seeId = (id, extra = {}) => [`- assertVisible:`, `    id: "${id}"`, ...Object.entries(extra).map(([k, v]) => `    ${k}: ${typeof v === 'string' ? `"${nb(v)}"` : v}`)];
 const see = (text) => [`- assertVisible: "${nb(text)}"`];
+// The language choices sit below the toggles on Settings: scroll to them first (no-op when already visible).
+const reach = (id) => [`- scrollUntilVisible:`, `    element:`, `      id: "${id}"`];
 const shot = (name) => [`- takeScreenshot: ${name}`];
 const waitId = (id) => [`- extendedWaitUntil:`, `    visible:`, `      id: "${id}"`, `    timeout: 20000`];
 
+// The game follows the phone's language: after the consent choice, every flow pins French in the settings so that
+// its French assertions hold whatever the emulator's language (language.yaml covers English).
+const decide = (consent) => [...tap(`consent-${consent}`), '- runFlow: helpers/french.yaml'];
 const fresh = () => [`- launchApp:`, `    clearState: true`, ...waitId('consent-screen')];
 const start = (consent = 'refuse', drawn = 0) => [
   ...fresh(),
   // The link must come after the first screen: opened earlier it reaches the app before its listener.
   `- openLink: "lotoquine://seed/${SEED}${drawn ? `/drawn/${drawn}` : ''}"`,
-  ...tap(`consent-${consent}`),
+  ...decide(consent),
   ...tap('home-new-game'),
   ...see('Touche la boule pour commencer'),
 ];
@@ -44,13 +49,47 @@ function flow(name, tags, steps) {
 }
 
 export const FLOWS = {
-  'smoke.yaml': flow('Smoke - consent in French, refuse, no consent screen after a restart (AC-01, AC-02)', ['smoke'], [
+  'helpers/french.yaml': [APP, "name: Helper - pin the game in French from Home (flows assert French texts whatever the emulator's language)", '---',
+    ...tap('home-settings'), ...reach('settings-language-fr'), ...tap('settings-language-fr'), ...tap('settings-back'), ...seeId('home-screen')].join('\n') + '\n',
+  'language.yaml': flow('Language - switch from the settings, the whole UI follows at once and the choice survives a restart (AC-43)', ['e2e', 'language'], [
     ...fresh(),
-    ...see('Statistiques anonymes'),
-    ...see('Accepter'),
-    ...see('Refuser'),
-    ...shot('01-consent'),
+    `- openLink: "lotoquine://seed/${SEED}"`,
     ...tap('consent-refuse'),
+    ...tap('home-settings'),
+    ...reach('settings-language-fr'), ...tap('settings-language-fr'),
+    ...see('Paramètres'),
+    ...see('Voix'),
+    ...shot('language-fr-settings'),
+    ...tap('settings-language-en'),
+    ...see('Settings'),
+    ...see('Voice'),
+    ...see('Bingo calls'),
+    ...shot('language-en-settings'),
+    ...tap('settings-back'),
+    ...see('New game'),
+    ...tap('home-new-game'),
+    ...seeId('game-stage', { text: 'One line' }),
+    ...tap('game-draw'),
+    `- extendedWaitUntil:`, `    visible: "Ball no. 1"`, `    timeout: 5000`,
+    ...shot('language-en-game'),
+    '- stopApp',
+    '- launchApp',
+    ...waitId('game-screen'),
+    ...seeId('game-stage', { text: 'One line' }),
+    ...tap('game-home'),
+    ...tap('home-settings'),
+    ...reach('settings-language-auto'), ...tap('settings-language-auto'),
+    ...reach('settings-language-fr'), ...tap('settings-language-fr'),
+    ...tap('settings-back'),
+    ...see('Reprendre la partie'),
+  ]),
+  'smoke.yaml': flow('Smoke - consent in the phone language (French or English), refuse, no consent screen after a restart (AC-01, AC-02)', ['smoke'], [
+    ...fresh(),
+    ...see('Statistiques anonymes|Anonymous statistics'),
+    ...see('Accepter|Accept'),
+    ...see('Refuser|Decline'),
+    ...shot('01-consent'),
+    ...decide('refuse'),
     ...seeId('home-screen'),
     ...see('Nouvelle partie'),
     ...shot('02-home'),
@@ -143,7 +182,7 @@ export const FLOWS = {
   ]),
   'settings.yaml': flow('Settings persist after a restart (AC-20)', ['e2e'], [
     ...fresh(),
-    ...tap('consent-accept'),
+    ...decide('accept'),
     ...tap('home-settings'),
     ...seeId('settings-voice', { checked: true }),
     ...shot('70-settings-on'),
@@ -157,7 +196,7 @@ export const FLOWS = {
   ]),
   'rules.yaml': flow('Rules page explains the three stages (AC-24)', ['e2e'], [
     ...fresh(),
-    ...tap('consent-refuse'),
+    ...decide('refuse'),
     ...tap('home-rules'),
     ...see('Quine : le premier à compléter une ligne.*'),
     ...see('Double quine : deux lignes complètes.'),
@@ -166,7 +205,7 @@ export const FLOWS = {
   ]),
   'about.yaml': flow('About screen tells the story, the word from the author and the version (AC-41)', ['e2e'], [
     ...fresh(),
-    ...tap('consent-refuse'),
+    ...decide('refuse'),
     ...tap('home-about'),
     ...seeId('about-screen'),
     ...see("L'histoire de ce jeu"),

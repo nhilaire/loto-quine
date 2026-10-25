@@ -11,6 +11,7 @@ tags:
     timeout: 20000
 - tapOn:
     id: "consent-accept"
+- runFlow: helpers/french.yaml
 - tapOn:
     id: "home-settings"
 - assertVisible:
