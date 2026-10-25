@@ -8,6 +8,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+// The About screen shows the version from package.json (bumped at each release).
+const VERSION = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8')).version;
 export const SEED = 42;
 export const SEED_42_BALLS = [55, 40, 78, 61, 16, 47];
 const [B1, B2, B3, B4, B5, B6] = SEED_42_BALLS;
@@ -213,9 +215,9 @@ export const FLOWS = {
     ...see("Un mot de l'auteur"),
     ...shot('85-about'),
     '- scrollUntilVisible:',
-    '    element: "Version 0.1.1"',
+    `    element: "Version ${VERSION}"`,
     '    timeout: 20000',
-    ...see('Version 0.1.1'),
+    ...see(`Version ${VERSION}`),
     ...shot('86-about-end'),
     ...tap('about-back'),
     ...seeId('home-screen'),
