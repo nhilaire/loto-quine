@@ -5,7 +5,7 @@ import { recordError } from '@react-native-firebase/crashlytics';
 
 import { createExpoFeedback } from '../audio/expoFeedback';
 import { applyConsent } from '../telemetry/telemetry';
-import { Feedback, onReveal, onRollStart, onWinValidated } from '../audio/feedback';
+import { Feedback, onReveal, onRollStart, onTieReveal, onWinValidated } from '../audio/feedback';
 import { DEFAULT_SETTINGS, Settings } from '../storage/settings';
 
 const NB = ' ';
@@ -15,7 +15,7 @@ function recorder(): Feedback & { calls: string[] } {
   const calls: string[] = [];
   return {
     calls,
-    speak: (t) => calls.push(`speak:${t}`),
+    speak: (t, locale) => calls.push(`speak:${t}` + (locale === 'fr-FR' ? '' : `@${locale}`)),
     stopSpeech: () => calls.push('stop'),
     sound: (e) => calls.push(`sound:${e}`),
     haptic: (h) => calls.push(`haptic:${h}`),
@@ -25,31 +25,45 @@ function recorder(): Feedback & { calls: string[] } {
 describe('feedback policy (AC-21, AC-22)', () => {
   it('AC-21: speaks the plain number or the nickname depending on settings', () => {
     const fb = recorder();
-    onReveal(22, { ...DEFAULT_SETTINGS, nicknames: false }, fb);
-    onReveal(22, DEFAULT_SETTINGS, fb);
+    onReveal(22, { ...DEFAULT_SETTINGS, nicknames: false }, 'fr', fb);
+    onReveal(22, DEFAULT_SETTINGS, 'fr', fb);
     expect(fb.calls.filter((c) => c.startsWith('speak'))).toEqual([`speak:22${NB}!`, `speak:22, les deux petits canards${NB}!`]);
+  });
+
+  it('AC-44: in English, the British call comes first and the voice is en-GB', () => {
+    const fb = recorder();
+    onReveal(11, DEFAULT_SETTINGS, 'en', fb);
+    onReveal(10, DEFAULT_SETTINGS, 'en', fb);
+    onReveal(11, { ...DEFAULT_SETTINGS, nicknames: false }, 'en', fb);
+    onTieReveal(7, DEFAULT_SETTINGS, 'en', fb);
+    expect(fb.calls.filter((c) => c.startsWith('speak'))).toEqual([
+      'speak:legs eleven, 11!@en-GB',
+      'speak:10!@en-GB',
+      'speak:11!@en-GB',
+      'speak:7!@en-GB',
+    ]);
   });
 
   it('AC-21: says nothing with the voice off', () => {
     const fb = recorder();
-    onReveal(22, { ...DEFAULT_SETTINGS, voice: false }, fb);
+    onReveal(22, { ...DEFAULT_SETTINGS, voice: false }, 'fr', fb);
     expect(fb.calls.some((c) => c.startsWith('speak'))).toBe(false);
   });
 
   it('AC-21: a speech failure does not throw', () => {
     const fb = { ...recorder(), speak: () => { throw new Error('no TTS engine'); } };
-    expect(() => onReveal(5, DEFAULT_SETTINGS, fb)).not.toThrow();
+    expect(() => onReveal(5, DEFAULT_SETTINGS, 'fr', fb)).not.toThrow();
   });
 
   it('AC-22: roll sound, reveal vibration, win sound and vibration when on; nothing when off', () => {
     const on = recorder();
     onRollStart(DEFAULT_SETTINGS, on);
-    onReveal(5, { ...DEFAULT_SETTINGS, voice: false }, on);
+    onReveal(5, { ...DEFAULT_SETTINGS, voice: false }, 'fr', on);
     onWinValidated(DEFAULT_SETTINGS, on);
     expect(on.calls).toEqual(['sound:roll', 'haptic:reveal', 'sound:win', 'haptic:win']);
     const off = recorder();
     onRollStart(OFF, off);
-    onReveal(5, OFF, off);
+    onReveal(5, OFF, 'fr', off);
     onWinValidated(OFF, off);
     expect(off.calls).toEqual([]);
   });
@@ -58,15 +72,17 @@ describe('feedback policy (AC-21, AC-22)', () => {
 describe('expo feedback (AC-21)', () => {
   beforeEach(() => jest.clearAllMocks());
 
-  it('stops the previous announcement and speaks in fr-FR', () => {
-    createExpoFeedback().speak(`47${NB}!`);
+  it('stops the previous announcement and speaks in the given language', () => {
+    createExpoFeedback().speak(`47${NB}!`, 'fr-FR');
     expect(Speech.stop).toHaveBeenCalled();
     expect(Speech.speak).toHaveBeenCalledWith(`47${NB}!`, expect.objectContaining({ language: 'fr-FR' }));
+    createExpoFeedback().speak('legs eleven, 11!', 'en-GB');
+    expect(Speech.speak).toHaveBeenLastCalledWith('legs eleven, 11!', expect.objectContaining({ language: 'en-GB' }));
   });
 
   it('AC-21: an asynchronous text-to-speech error is reported, not thrown', async () => {
     await applyConsent(true);
-    createExpoFeedback().speak(`5${NB}!`);
+    createExpoFeedback().speak(`5${NB}!`, 'fr-FR');
     const options = (Speech.speak as jest.Mock).mock.calls[0][1];
     expect(() => options.onError(new Error('TTS engine unavailable'))).not.toThrow();
     expect(recordError).toHaveBeenCalledTimes(1);

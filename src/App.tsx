@@ -7,7 +7,8 @@ import { onReveal, onRollStart, onTieReveal, onWinValidated, stopAnnouncements }
 import { GameAction, GameState, WinChoice, lastBall, newGame, reduce } from './game/game';
 import { randomSeed, seedFrom } from './game/random';
 import { TrackCall, startEvents, transitionEvents } from './game/telemetryRules';
-import { fr } from './i18n/fr';
+import { Language, LanguageSetting } from './i18n';
+import { I18nProvider, useI18n } from './i18n/I18nProvider';
 import { AboutScreen } from './screens/AboutScreen';
 import { CheckScreen } from './screens/CheckScreen';
 import { ConsentScreen } from './screens/ConsentScreen';
@@ -17,6 +18,7 @@ import { HomeScreen } from './screens/HomeScreen';
 import { RulesScreen } from './screens/RulesScreen';
 import { SettingsScreen } from './screens/SettingsScreen';
 import { loadGame, saveGame } from './storage/gameStore';
+import { loadLanguageSetting, saveLanguageSetting } from './storage/languageSetting';
 import { DEFAULT_SETTINGS, SettingKey, Settings, loadSettings, saveSettings } from './storage/settings';
 import { Consent, loadConsent, saveConsent } from './telemetry/consentStore';
 import { applyConsent, track } from './telemetry/telemetry';
@@ -39,6 +41,7 @@ export default function App() {
   const [loaded, setLoaded] = useState(false);
   const [consent, setConsentState] = useState<Consent>('unknown');
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
+  const [languageSetting, setLanguageSetting] = useState<LanguageSetting>('auto');
   const [route, setRoute] = useState<Route>('home');
   const [game, setGame] = useState<GameState | null>(null);
   const [finished, setFinished] = useState<GameState | null>(null);
@@ -46,15 +49,23 @@ export default function App() {
   const gameRef = useRef<GameState | null>(null);
   const settingsRef = useRef(settings);
   settingsRef.current = settings;
+  // The language resolved by I18nProvider (below this component), for the voice.
+  const languageRef = useRef<Language>('fr');
 
   useEffect(() => {
     let alive = true;
     (async () => {
-      const [storedConsent, storedSettings, storedGame] = await Promise.all([loadConsent(), loadSettings(), loadGame()]);
+      const [storedConsent, storedSettings, storedGame, storedLanguage] = await Promise.all([
+        loadConsent(),
+        loadSettings(),
+        loadGame(),
+        loadLanguageSetting(),
+      ]);
       if (storedConsent !== 'unknown') await applyConsent(storedConsent === 'granted');
       if (!alive) return;
       setConsentState(storedConsent);
       setSettings(storedSettings);
+      setLanguageSetting(storedLanguage);
       gameRef.current = storedGame;
       setGame(storedGame);
       // A game in progress reopens directly, exactly as it was (no animation, no voice).
@@ -130,6 +141,12 @@ export default function App() {
     setConsentState(value);
   }, []);
 
+  // The switch is immediate (context), then saved; the game in progress is not touched.
+  const changeLanguage = useCallback((value: LanguageSetting) => {
+    setLanguageSetting(value);
+    void saveLanguageSetting(value);
+  }, []);
+
   const changeSetting = useCallback((key: SettingKey, value: boolean) => {
     setSettings((current) => {
       const next = { ...current, [key]: value };
@@ -146,7 +163,7 @@ export default function App() {
   const revealed = useCallback(() => {
     const next = dispatch({ type: 'revealed' });
     const ball = next ? lastBall(next) : null;
-    if (ball !== null) onReveal(ball, settingsRef.current);
+    if (ball !== null) onReveal(ball, settingsRef.current, languageRef.current);
   }, [dispatch]);
 
   const validateWin = useCallback(() => {
@@ -196,7 +213,7 @@ export default function App() {
         game={game}
         onBack={() => setRoute('game')}
         onValidate={validateWin}
-        onTieReveal={(n) => onTieReveal(n, settingsRef.current)}
+        onTieReveal={(n) => onTieReveal(n, settingsRef.current, languageRef.current)}
       />
     );
   } else if (route === 'over' && finished) {
@@ -230,19 +247,30 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <ErrorBoundary>
-        {content}
-        <Dialog
-          visible={confirm !== null}
-          title={confirm === 'replace' ? fr.game.replaceConfirm : fr.game.endConfirm}
-          onRequestClose={() => setConfirm(null)}
-          testID="confirm-dialog"
-        >
-          <Button label={fr.common.yes} onPress={confirm === 'replace' ? startGame : endGame} testID="confirm-yes" />
-          <Button label={fr.common.no} onPress={() => setConfirm(null)} variant="secondary" testID="confirm-no" />
-        </Dialog>
-      </ErrorBoundary>
+      <I18nProvider setting={languageSetting} onChange={changeLanguage}>
+        <LanguageTracker languageRef={languageRef} />
+        <ErrorBoundary>
+          {content}
+          <ConfirmDialog confirm={confirm} onYes={confirm === 'replace' ? startGame : endGame} onNo={() => setConfirm(null)} />
+        </ErrorBoundary>
+      </I18nProvider>
     </SafeAreaProvider>
+  );
+}
+
+// Keeps the current language available to the callbacks of App (voice announcements).
+function LanguageTracker({ languageRef }: { languageRef: React.MutableRefObject<Language> }) {
+  languageRef.current = useI18n().language;
+  return null;
+}
+
+function ConfirmDialog({ confirm, onYes, onNo }: { confirm: Confirm; onYes: () => void; onNo: () => void }) {
+  const { t } = useI18n();
+  return (
+    <Dialog visible={confirm !== null} title={confirm === 'replace' ? t.game.replaceConfirm : t.game.endConfirm} onRequestClose={onNo} testID="confirm-dialog">
+      <Button label={t.common.yes} onPress={onYes} testID="confirm-yes" />
+      <Button label={t.common.no} onPress={onNo} variant="secondary" testID="confirm-no" />
+    </Dialog>
   );
 }
 

@@ -2,6 +2,7 @@
 // recording fake in tests). Default: silent. The policy functions below apply the host's settings and never throw:
 // a failing voice or sound must not change the game.
 import { announcement } from '../game/announce';
+import { DICTIONARIES, Language } from '../i18n';
 import type { Settings } from '../storage/settings';
 import { reportError } from '../telemetry/telemetry';
 
@@ -9,7 +10,7 @@ export type Effect = 'roll' | 'win';
 export type Haptic = 'reveal' | 'win';
 
 export type Feedback = {
-  speak(text: string): void; // stops the previous announcement first
+  speak(text: string, locale: string): void; // stops the previous announcement first; locale: BCP 47 voice language
   stopSpeech(): void;
   sound(effect: Effect): void;
   haptic(kind: Haptic): void;
@@ -39,8 +40,9 @@ export function onRollStart(settings: Settings, fb: Feedback = current): void {
   if (settings.sounds) safe('sound_roll', () => fb.sound('roll'));
 }
 
-export function onReveal(ball: number, settings: Settings, fb: Feedback = current): void {
-  if (settings.voice) safe('speech', () => fb.speak(announcement(ball, settings.nicknames).spoken));
+// The voice speaks the game's language (fr-FR or en-GB, the dictionary's locale).
+export function onReveal(ball: number, settings: Settings, language: Language, fb: Feedback = current): void {
+  if (settings.voice) safe('speech', () => fb.speak(announcement(ball, settings.nicknames, language).spoken, DICTIONARIES[language].locale));
   if (settings.vibrations) safe('haptic_reveal', () => fb.haptic('reveal'));
 }
 
@@ -54,7 +56,7 @@ export function stopAnnouncements(fb: Feedback = current): void {
 }
 
 // Tie-break: each player's number is announced plainly.
-export function onTieReveal(n: number, settings: Settings, fb: Feedback = current): void {
-  if (settings.voice) safe('speech', () => fb.speak(announcement(n, false).spoken));
+export function onTieReveal(n: number, settings: Settings, language: Language, fb: Feedback = current): void {
+  if (settings.voice) safe('speech', () => fb.speak(announcement(n, false, language).spoken, DICTIONARIES[language].locale));
   if (settings.vibrations) safe('haptic_reveal', () => fb.haptic('reveal'));
 }

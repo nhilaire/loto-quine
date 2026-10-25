@@ -1,7 +1,7 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
-import { APP_NAME, APP_VERSION } from '../config/app';
-import { fr } from '../i18n/fr';
+import { APP_VERSION, appName } from '../config/app';
+import { useI18n } from '../i18n/I18nProvider';
 import { Button } from '../ui/Button';
 import { Screen } from '../ui/Screen';
 import { colors, font, spacing } from '../ui/theme';
@@ -22,19 +22,20 @@ function Section({ title, paragraphs }: { title: string; paragraphs: readonly st
 }
 
 export function AboutScreen({ onBack }: { onBack: () => void }) {
+  const { t, language } = useI18n();
   return (
     <Screen testID="about-screen">
       <Text style={styles.title} accessibilityRole="header">
-        {fr.about.title}
+        {t.about.title}
       </Text>
       <ScrollView contentContainerStyle={styles.body}>
-        <Text style={styles.name}>{APP_NAME}</Text>
-        <Section title={fr.about.storyTitle} paragraphs={fr.about.story} />
-        <Section title={fr.about.authorTitle} paragraphs={fr.about.author} />
-        <Section title={fr.about.dataTitle} paragraphs={fr.about.data} />
-        <Text style={styles.version}>{fr.about.version(APP_VERSION)}</Text>
+        <Text style={styles.name}>{appName(language)}</Text>
+        <Section title={t.about.storyTitle} paragraphs={t.about.story} />
+        <Section title={t.about.authorTitle} paragraphs={t.about.author} />
+        <Section title={t.about.dataTitle} paragraphs={t.about.data} />
+        <Text style={styles.version}>{t.about.version(APP_VERSION)}</Text>
       </ScrollView>
-      <Button label={fr.about.back} onPress={onBack} variant="secondary" testID="about-back" />
+      <Button label={t.about.back} onPress={onBack} variant="secondary" testID="about-back" />
     </Screen>
   );
 }

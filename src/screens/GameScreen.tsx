@@ -5,7 +5,7 @@ import { Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-na
 import { announcement } from '../game/announce';
 import { allOut, lastBalls } from '../game/draw';
 import { GameState, WinChoice, canDraw, lastBall } from '../game/game';
-import { fr } from '../i18n/fr';
+import { useI18n } from '../i18n/I18nProvider';
 import { Ball } from '../ui/Ball';
 import { Board } from '../ui/Board';
 import { Button } from '../ui/Button';
@@ -29,12 +29,13 @@ type Props = {
 };
 
 export function GameScreen({ game, nicknames, onDraw, onRevealed, onCheck, onHome, onEnd, onChoose }: Props) {
+  const { t, language } = useI18n();
   useKeepAwake();
   const { width, height } = useWindowDimensions();
   const ball = lastBall(game);
   const drawn = useMemo(() => new Set(game.draw), [game.draw]);
   const rolling = game.animating;
-  const nickname = ball !== null && !rolling ? announcement(ball, nicknames).nickname : null;
+  const nickname = ball !== null && !rolling ? announcement(ball, nicknames, language).nickname : null;
   const ballSize = Math.min(width * 0.56, height * 0.27);
   const boardWidth = width - 2 * spacing.md;
 
@@ -50,20 +51,20 @@ export function GameScreen({ game, nicknames, onDraw, onRevealed, onCheck, onHom
   return (
     <Screen testID="game-screen" gap={spacing.sm}>
       <View style={styles.header}>
-        <Button label={fr.common.home} onPress={onHome} variant="ghost" testID="game-home" />
+        <Button label={t.common.home} onPress={onHome} variant="ghost" testID="game-home" />
         <View style={styles.stage}>
           <Text style={styles.stageText} testID="game-stage">
-            {fr.stage[game.stage]}
+            {t.stage[game.stage]}
           </Text>
         </View>
-        <Button label={fr.game.end} onPress={onEnd} variant="ghost" testID="game-end" />
+        <Button label={t.game.end} onPress={onEnd} variant="ghost" testID="game-end" />
       </View>
 
       <Pressable
         style={styles.ballArea}
         onPress={drawEnabled ? onDraw : undefined}
         accessibilityRole="button"
-        accessibilityLabel={fr.game.draw}
+        accessibilityLabel={t.game.draw}
         testID="game-ball-zone"
       >
         <Ball
@@ -71,13 +72,13 @@ export function GameScreen({ game, nicknames, onDraw, onRevealed, onCheck, onHom
           rolling={rolling}
           size={ballSize}
           testID="game-ball"
-          accessibilityLabel={ball !== null && !rolling ? fr.game.ballLabel(ball) : fr.game.draw}
+          accessibilityLabel={ball !== null && !rolling ? t.game.ballLabel(ball) : t.game.draw}
         />
         <Text style={styles.nickname} numberOfLines={1} testID="game-nickname">
           {nickname ?? ' '}
         </Text>
         <Text style={styles.counter} testID="game-counter">
-          {ball === null ? fr.game.noBall : rolling ? ' ' : fr.game.counter(game.draw.length)}
+          {ball === null ? t.game.noBall : rolling ? ' ' : t.game.counter(game.draw.length)}
         </Text>
       </Pressable>
 
@@ -86,15 +87,15 @@ export function GameScreen({ game, nicknames, onDraw, onRevealed, onCheck, onHom
 
       {allOut(game.draw) && !rolling ? (
         <Text style={styles.allOut} testID="game-all-out">
-          {fr.game.allOut}
+          {t.game.allOut}
         </Text>
       ) : null}
-      <Button label={fr.game.draw} onPress={onDraw} disabled={!drawEnabled} large testID="game-draw" />
-      <Button label={fr.game.check} onPress={onCheck} variant="secondary" disabled={rolling} testID="game-check" />
+      <Button label={t.game.draw} onPress={onDraw} disabled={!drawEnabled} large testID="game-draw" />
+      <Button label={t.game.check} onPress={onCheck} variant="secondary" disabled={rolling} testID="game-check" />
 
-      <Dialog visible={game.pendingWin} title={fr.win.title} onRequestClose={() => {}} testID="win-dialog" decoration={<Confetti />}>
-        <Button label={fr.win.continue} onPress={() => onChoose('continue')} testID="win-continue" />
-        <Button label={fr.win.newDraw} onPress={() => onChoose('new_draw')} variant="secondary" testID="win-new-draw" />
+      <Dialog visible={game.pendingWin} title={t.win.title} onRequestClose={() => {}} testID="win-dialog" decoration={<Confetti />}>
+        <Button label={t.win.continue} onPress={() => onChoose('continue')} testID="win-continue" />
+        <Button label={t.win.newDraw} onPress={() => onChoose('new_draw')} variant="secondary" testID="win-new-draw" />
       </Dialog>
     </Screen>
   );

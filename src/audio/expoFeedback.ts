@@ -1,4 +1,4 @@
-// Real feedback: the phone's French text-to-speech (expo-speech, offline), bundled sound effects (expo-audio) and
+// Real feedback: the phone's text-to-speech in the game's language (expo-speech, offline), bundled sound effects (expo-audio) and
 // vibrations (expo-haptics). Errors are reported (if consented) and never crash the game.
 import { AudioPlayer, createAudioPlayer } from 'expo-audio';
 import * as Haptics from 'expo-haptics';
@@ -16,9 +16,9 @@ export function createExpoFeedback(): Feedback {
   const players: Partial<Record<Effect, AudioPlayer>> = {};
 
   return {
-    speak: (text) => {
+    speak: (text, locale) => {
       void Speech.stop();
-      Speech.speak(text, { language: 'fr-FR', onError: (error) => reportError(error, 'speech') });
+      Speech.speak(text, { language: locale, onError: (error) => reportError(error, 'speech') });
     },
     stopSpeech: () => {
       void Speech.stop();

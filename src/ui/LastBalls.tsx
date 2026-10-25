@@ -1,13 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-import { fr } from '../i18n/fr';
+import { useI18n } from '../i18n/I18nProvider';
 import { ballColor, colors, font, spacing } from './theme';
 
 // The last balls in draw order, most recent first.
 export function LastBalls({ balls }: { balls: readonly number[] }) {
+  const { t } = useI18n();
   return (
     <View style={styles.row} testID="game-last-balls">
-      <Text style={styles.label}>{fr.game.lastBalls}</Text>
+      <Text style={styles.label}>{t.game.lastBalls}</Text>
       <View style={styles.balls}>
         {balls.map((n, i) => (
           <View key={n} style={[styles.ball, { backgroundColor: ballColor(n), opacity: 1 - i * 0.12 }]}>

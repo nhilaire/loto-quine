@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 import { announcement } from '../game/announce';
-import { NICKNAMES, SPOKEN_NICKNAMES } from '../game/nicknames';
+import { CALLS_EN, NICKNAMES, SPOKEN_NICKNAMES } from '../game/nicknames';
 import { typographyProblems } from '../i18n/typography';
 
 const NB = ' ';
@@ -45,6 +45,32 @@ describe('nicknames (AC-21, AC-23, AC-30, AC-31)', () => {
     const sheet = fs.readFileSync(path.join(__dirname, '../../docs/NICKNAMES.md'), 'utf8');
     for (const [key, nickname] of Object.entries(NICKNAMES)) {
       expect(sheet).toContain(`| ${key} | ${nickname} |`);
+    }
+  });
+});
+
+describe('English bingo calls (AC-23, AC-31, AC-44)', () => {
+  it('every key is a ball 1-90 and every call is non-empty', () => {
+    const entries = Object.entries(CALLS_EN);
+    expect(entries.length).toBeGreaterThan(50);
+    for (const [key, call] of entries) {
+      const n = Number(key);
+      expect(Number.isInteger(n) && n >= 1 && n <= 90).toBe(true);
+      expect(call.trim().length).toBeGreaterThan(0);
+    }
+  });
+
+  it('the call comes first, then the number; numbers without a call are announced plainly', () => {
+    expect(announcement(1, true, 'en')).toEqual({ spoken: "Kelly's eye, 1!", nickname: "Kelly's eye" });
+    expect(announcement(90, true, 'en')).toEqual({ spoken: 'top of the shop, 90!', nickname: 'top of the shop' });
+    expect(announcement(88, true, 'en')).toEqual({ spoken: '88!', nickname: null });
+    expect(announcement(11, false, 'en')).toEqual({ spoken: '11!', nickname: null });
+  });
+
+  it('the review sheet lists every call', () => {
+    const sheet = fs.readFileSync(path.join(__dirname, '../../docs/NICKNAMES.md'), 'utf8');
+    for (const [key, call] of Object.entries(CALLS_EN)) {
+      expect(sheet).toContain(`| ${key} | ${call} |`);
     }
   });
 });

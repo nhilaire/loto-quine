@@ -1,24 +1,25 @@
 import { ScrollView, StyleSheet, Text } from 'react-native';
 
-import { fr } from '../i18n/fr';
+import { useI18n } from '../i18n/I18nProvider';
 import { Button } from '../ui/Button';
 import { Screen } from '../ui/Screen';
 import { colors, font, spacing } from '../ui/theme';
 
 export function RulesScreen({ onBack }: { onBack: () => void }) {
+  const { t } = useI18n();
   return (
     <Screen testID="rules-screen">
       <Text style={styles.title} accessibilityRole="header">
-        {fr.rules.title}
+        {t.rules.title}
       </Text>
       <ScrollView contentContainerStyle={styles.body}>
-        {fr.rules.body.map((paragraph) => (
+        {t.rules.body.map((paragraph) => (
           <Text key={paragraph} style={styles.paragraph}>
             {paragraph}
           </Text>
         ))}
       </ScrollView>
-      <Button label={fr.common.back} onPress={onBack} variant="secondary" testID="rules-back" />
+      <Button label={t.common.back} onPress={onBack} variant="secondary" testID="rules-back" />
     </Screen>
   );
 }

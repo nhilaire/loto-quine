@@ -1,3 +1,4 @@
+import { en } from '../i18n/en';
 import { fr } from '../i18n/fr';
 import { typographyProblems } from '../i18n/typography';
 
@@ -43,5 +44,25 @@ describe('check wording follows the stage (AC-40)', () => {
       double_quine: 'Saisis seulement les 2 lignes gagnantes.',
       carton_plein: 'Saisis les 3 lignes du carton.',
     });
+  });
+});
+
+describe('English copy (AC-44)', () => {
+  it('uses the British bingo stage names', () => {
+    expect(en.stage).toEqual({ quine: 'One line', double_quine: 'Two lines', carton_plein: 'Full house' });
+    expect(en.check.title.carton_plein).toBe('Check a full house');
+  });
+
+  it('singular for 1 only', () => {
+    expect(en.check.missing(1)).toBe('1 number missing');
+    expect(en.check.missing(2)).toBe('2 numbers missing');
+    expect(en.over.balls(0)).toBe('0 balls drawn');
+    expect(en.over.balls(1)).toBe('1 ball drawn');
+    expect(en.over.balls(5)).toBe('5 balls drawn');
+  });
+
+  it('uses English typography: no no-break space, no « » quotes', () => {
+    const texts = strings(en);
+    expect(texts.filter((t) => /[  «»]/.test(t))).toEqual([]);
   });
 });

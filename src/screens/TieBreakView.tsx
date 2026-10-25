@@ -3,7 +3,7 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { GameState } from '../game/game';
 import { MAX_TIED, MIN_TIED, tieBreakNumbers, tieBreakWinner } from '../game/tieBreak';
-import { fr } from '../i18n/fr';
+import { useI18n } from '../i18n/I18nProvider';
 import { Ball } from '../ui/Ball';
 import { Button } from '../ui/Button';
 import { Screen } from '../ui/Screen';
@@ -13,6 +13,7 @@ type Props = { game: GameState; onBack: () => void; onValidate: () => void; onRe
 
 // Several winners on the same ball: each player draws a number in turn, the highest wins.
 export function TieBreakView({ game, onBack, onValidate, onReveal }: Props) {
+  const { t } = useI18n();
   const [players, setPlayers] = useState(MIN_TIED);
   const [revealed, setRevealed] = useState(0);
   const numbers = useMemo(() => tieBreakNumbers(game, players), [game, players]);
@@ -25,10 +26,10 @@ export function TieBreakView({ game, onBack, onValidate, onReveal }: Props) {
   return (
     <Screen testID="tie-screen" gap={spacing.sm}>
       <Text style={styles.title} accessibilityRole="header">
-        {fr.tie.title}
+        {t.tie.title}
       </Text>
       <View style={styles.stepper}>
-        <Text style={styles.label}>{fr.tie.count}</Text>
+        <Text style={styles.label}>{t.tie.count}</Text>
         <Pressable testID="tie-minus" accessibilityRole="button" accessibilityLabel="−" disabled={locked} onPress={() => change(-1)} style={[styles.stepButton, locked && styles.dim]}>
           <Text style={styles.stepText}>−</Text>
         </Pressable>
@@ -42,13 +43,13 @@ export function TieBreakView({ game, onBack, onValidate, onReveal }: Props) {
       <ScrollView contentContainerStyle={styles.list}>
         {numbers.map((n, i) => (
           <View key={i} style={[styles.player, i === winner && styles.winner]}>
-            <Text style={styles.playerName}>{fr.tie.player(i + 1)}</Text>
+            <Text style={styles.playerName}>{t.tie.player(i + 1)}</Text>
             {i < revealed ? (
-              <Ball number={n} rolling={false} size={52} testID={`tie-ball-${i + 1}`} accessibilityLabel={fr.game.ballLabel(n)} />
+              <Ball number={n} rolling={false} size={52} testID={`tie-ball-${i + 1}`} accessibilityLabel={t.game.ballLabel(n)} />
             ) : (
               <View style={styles.drawButton}>
                 <Button
-                  label={fr.tie.draw}
+                  label={t.tie.draw}
                   disabled={i !== revealed}
                   onPress={() => {
                     setRevealed(i + 1);
@@ -64,12 +65,12 @@ export function TieBreakView({ game, onBack, onValidate, onReveal }: Props) {
       {done ? (
         <>
           <Text style={styles.result} testID="tie-winner">
-            {fr.tie.winner(winner + 1, numbers[winner])}
+            {t.tie.winner(winner + 1, numbers[winner])}
           </Text>
-          <Button label={fr.check.validate} onPress={onValidate} large testID="tie-validate" />
+          <Button label={t.check.validate} onPress={onValidate} large testID="tie-validate" />
         </>
       ) : null}
-      <Button label={fr.common.back} onPress={onBack} variant="secondary" testID="tie-back" />
+      <Button label={t.common.back} onPress={onBack} variant="secondary" testID="tie-back" />
     </Screen>
   );
 }

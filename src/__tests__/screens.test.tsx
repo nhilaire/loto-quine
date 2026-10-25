@@ -7,6 +7,8 @@ import { useKeepAwake } from 'expo-keep-awake';
 import App from '../App';
 import { setPendingStart } from '../app/testSeed';
 import { Feedback, setFeedback } from '../audio/feedback';
+import { APP_VERSION } from '../config/app';
+import { announcement } from '../game/announce';
 import { BALL_COUNT, drawBall, emptyDraw } from '../game/draw';
 import { seedFrom } from '../game/random';
 import { tieBreakNumbers, tieBreakWinner } from '../game/tieBreak';
@@ -294,6 +296,25 @@ describe('screens and navigation', () => {
     }
   });
 
+  it('AC-44: an English game shows English stages and calls, and the voice speaks en-GB', async () => {
+    const spoken: string[] = [];
+    const recorder: Feedback = { speak: (t, locale) => spoken.push(`${locale} ${t}`), stopSpeech: () => {}, sound: () => {}, haptic: () => {} };
+    setFeedback(recorder);
+    try {
+      await AsyncStorage.setItem('settings.language.v1', 'en');
+      await start();
+      expect(screen.getByText('One line')).toBeTruthy();
+      await drawBalls(1);
+      const ball = BALLS[0];
+      const { spoken: text, nickname } = announcement(ball, true, 'en');
+      expect(screen.getByText('Ball no. 1')).toBeTruthy();
+      if (nickname) expect(screen.getByText(nickname)).toBeTruthy();
+      expect(spoken).toEqual([`en-GB ${text}`]);
+    } finally {
+      setFeedback(null);
+    }
+  });
+
   it('AC-26: nothing is logged once statistics are turned off in the settings', async () => {
     await AsyncStorage.setItem('telemetry.consent.v1', 'granted');
     setPendingStart({ seed: SEED, drawn: 0 });
@@ -352,7 +373,7 @@ describe('screens and navigation', () => {
     expect(screen.getByText(/développeur passionné/)).toBeTruthy();
     expect(screen.getByText(/pas exempt de bugs/)).toBeTruthy();
     expect(screen.getByText(/Aucun compte, aucune publicité/)).toBeTruthy();
-    expect(screen.getByText('Version 0.1.1')).toBeTruthy();
+    expect(screen.getByText(`Version ${APP_VERSION}`)).toBeTruthy();
     await fireEvent.press(screen.getByTestId('about-back'));
     expect(screen.getByTestId('home-screen')).toBeTruthy();
   });

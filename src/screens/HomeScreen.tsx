@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 
-import { APP_NAME } from '../config/app';
-import { fr } from '../i18n/fr';
+import { appName } from '../config/app';
+import { useI18n } from '../i18n/I18nProvider';
 import { Ball } from '../ui/Ball';
 import { Button } from '../ui/Button';
 import { Screen } from '../ui/Screen';
@@ -17,27 +17,28 @@ type Props = {
 };
 
 export function HomeScreen({ hasGame, onNewGame, onResume, onRules, onSettings, onAbout }: Props) {
+  const { t, language } = useI18n();
   const { width } = useWindowDimensions();
   return (
     <Screen testID="home-screen">
       <View style={styles.hero}>
         <Ball number={90} rolling={false} size={Math.min(width * 0.42, 190)} />
         <Text style={styles.title} accessibilityRole="header">
-          {APP_NAME}
+          {appName(language)}
         </Text>
-        <Text style={styles.pitch}>{fr.home.pitch}</Text>
+        <Text style={styles.pitch}>{t.home.pitch}</Text>
       </View>
-      {hasGame && <Button label={fr.home.resume} onPress={onResume} large testID="home-resume" />}
-      <Button label={fr.home.newGame} onPress={onNewGame} large={!hasGame} variant={hasGame ? 'secondary' : 'primary'} testID="home-new-game" />
+      {hasGame && <Button label={t.home.resume} onPress={onResume} large testID="home-resume" />}
+      <Button label={t.home.newGame} onPress={onNewGame} large={!hasGame} variant={hasGame ? 'secondary' : 'primary'} testID="home-new-game" />
       <View style={styles.row}>
         <View style={styles.half}>
-          <Button label={fr.home.rules} onPress={onRules} variant="secondary" testID="home-rules" />
+          <Button label={t.home.rules} onPress={onRules} variant="secondary" testID="home-rules" />
         </View>
         <View style={styles.half}>
-          <Button label={fr.home.settings} onPress={onSettings} variant="secondary" testID="home-settings" />
+          <Button label={t.home.settings} onPress={onSettings} variant="secondary" testID="home-settings" />
         </View>
       </View>
-      <Button label={fr.home.about} onPress={onAbout} variant="secondary" testID="home-about" />
+      <Button label={t.home.about} onPress={onAbout} variant="secondary" testID="home-about" />
     </Screen>
   );
 }

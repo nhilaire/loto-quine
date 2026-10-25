@@ -4,7 +4,8 @@ import { BackHandler, Pressable, ScrollView, StyleSheet, Text, View } from 'reac
 
 import { CardEntry, CellError, CheckResult, Cursor, checkCard, emptyCard, erase, nextCell, typeDigit } from '../game/card';
 import { GameState } from '../game/game';
-import { fr } from '../i18n/fr';
+import type { Strings } from '../i18n';
+import { useI18n } from '../i18n/I18nProvider';
 import { Button } from '../ui/Button';
 import { Screen } from '../ui/Screen';
 import { colors, font, radius, spacing } from '../ui/theme';
@@ -20,23 +21,24 @@ type Props = {
 const KEYS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'erase', '0', 'next'] as const;
 type Key = (typeof KEYS)[number];
 
-function keyLabel(key: Key): string {
-  return key === 'erase' ? fr.check.erase : key === 'next' ? fr.check.next : key;
+function keyLabel(key: Key, t: Strings): string {
+  return key === 'erase' ? t.check.erase : key === 'next' ? t.check.next : key;
 }
 
-function errorMessages(result: CheckResult | null): string[] {
+function errorMessages(result: CheckResult | null, t: Strings): string[] {
   if (!result) return [];
-  if (result.kind === 'empty') return [fr.check.errorEmpty];
+  if (result.kind === 'empty') return [t.check.errorEmpty];
   if (result.kind !== 'errors') return [];
   const messages: string[] = [];
   const kinds = new Set(result.cellErrors.flat().filter((e): e is CellError => e !== null));
-  if (kinds.has('range')) messages.push(fr.check.errorRange);
-  if (kinds.has('duplicate')) messages.push(fr.check.errorDuplicate);
-  if (result.incompleteRows.length > 0) messages.push(fr.check.errorIncomplete);
+  if (kinds.has('range')) messages.push(t.check.errorRange);
+  if (kinds.has('duplicate')) messages.push(t.check.errorDuplicate);
+  if (result.incompleteRows.length > 0) messages.push(t.check.errorIncomplete);
   return messages;
 }
 
 export function CheckScreen({ game, onBack, onValidate, onTieReveal }: Props) {
+  const { t } = useI18n();
   useKeepAwake();
   const [card, setCard] = useState<CardEntry>(emptyCard);
   const [cursor, setCursor] = useState<Cursor>({ row: 0, col: 0 });
@@ -69,15 +71,15 @@ export function CheckScreen({ game, onBack, onValidate, onTieReveal }: Props) {
 
   const verdict = result?.kind === 'verdict' ? result : null;
   const errors = result?.kind === 'errors' ? result : null;
-  const messages = errorMessages(result);
+  const messages = errorMessages(result, t);
 
   return (
     <Screen testID="check-screen" gap={spacing.sm}>
       <Text style={styles.title} accessibilityRole="header" testID="check-title">
-        {fr.check.title[game.stage]}
+        {t.check.title[game.stage]}
       </Text>
       <Text style={styles.need} testID="check-need">
-        {fr.check.need[game.stage]}
+        {t.check.need[game.stage]}
       </Text>
       <ScrollView contentContainerStyle={styles.scroll}>
         {card.map((row, r) => {
@@ -86,17 +88,17 @@ export function CheckScreen({ game, onBack, onValidate, onTieReveal }: Props) {
           return (
             <View key={r} style={styles.rowBlock}>
               <View style={styles.row}>
-                <Text style={styles.rowLabel}>{fr.check.rowLabel(r + 1)}</Text>
+                <Text style={styles.rowLabel}>{t.check.rowLabel(r + 1)}</Text>
                 {row.map((value, c) => {
                   const selected = cursor.row === r && cursor.col === c;
                   const cellError = errors?.cellErrors[r][c] ?? null;
                   const cell = value === '' ? undefined : rowResult?.cells.find((x) => x.value === parseInt(value, 10));
-                  const status = cell ? (cell.drawn ? fr.check.drawn : fr.check.missingNumber) : '';
+                  const status = cell ? (cell.drawn ? t.check.drawn : t.check.missingNumber) : '';
                   return (
                     <Pressable
                       key={c}
                       testID={`check-cell-${r}-${c}`}
-                      accessibilityLabel={`${value} ${status}`.trim() || fr.check.rowLabel(r + 1)}
+                      accessibilityLabel={`${value} ${status}`.trim() || t.check.rowLabel(r + 1)}
                       onPress={() => setCursor({ row: r, col: c })}
                       style={[
                         styles.cell,
@@ -113,7 +115,7 @@ export function CheckScreen({ game, onBack, onValidate, onTieReveal }: Props) {
               </View>
               {rowResult && rowResult.filled && !rowResult.complete ? (
                 <Text style={styles.rowMissing} testID={`check-row-missing-${r}`}>
-                  {fr.check.missing(rowResult.missing)}
+                  {t.check.missing(rowResult.missing)}
                 </Text>
               ) : null}
             </View>
@@ -126,15 +128,15 @@ export function CheckScreen({ game, onBack, onValidate, onTieReveal }: Props) {
         ))}
         {verdict ? (
           <Text style={[styles.verdict, verdict.win ? styles.win : styles.notYet]} testID="check-verdict">
-            {verdict.win ? fr.check.win : fr.check.notYet}
+            {verdict.win ? t.check.win : t.check.notYet}
           </Text>
         ) : null}
       </ScrollView>
 
       {verdict?.win ? (
         <>
-          <Button label={fr.check.validate} onPress={onValidate} large testID="check-validate" />
-          <Button label={fr.tie.open} onPress={() => setTie(true)} variant="secondary" testID="check-tie" />
+          <Button label={t.check.validate} onPress={onValidate} large testID="check-validate" />
+          <Button label={t.tie.open} onPress={() => setTie(true)} variant="secondary" testID="check-tie" />
         </>
       ) : (
         <View style={styles.keypad}>
@@ -143,22 +145,22 @@ export function CheckScreen({ game, onBack, onValidate, onTieReveal }: Props) {
               key={key}
               testID={`key-${key}`}
               accessibilityRole="button"
-              accessibilityLabel={keyLabel(key)}
+              accessibilityLabel={keyLabel(key, t)}
               onPress={() => press(key)}
               style={({ pressed }) => [styles.key, key.length > 1 && styles.keyAction, pressed && styles.keyPressed]}
             >
-              <Text style={[styles.keyText, key.length > 1 && styles.keyActionText]}>{keyLabel(key)}</Text>
+              <Text style={[styles.keyText, key.length > 1 && styles.keyActionText]}>{keyLabel(key, t)}</Text>
             </Pressable>
           ))}
         </View>
       )}
       <View style={styles.actions}>
         <View style={styles.half}>
-          <Button label={fr.common.back} onPress={onBack} variant="secondary" testID="check-back" />
+          <Button label={t.common.back} onPress={onBack} variant="secondary" testID="check-back" />
         </View>
         {!verdict?.win ? (
           <View style={styles.half}>
-            <Button label={fr.check.verify} onPress={() => setResult(checkCard(card, game.draw, game.stage))} testID="check-verify" />
+            <Button label={t.check.verify} onPress={() => setResult(checkCard(card, game.draw, game.stage))} testID="check-verify" />
           </View>
         ) : null}
       </View>
