@@ -4,11 +4,14 @@ Produced by the `verifier` agent from the PRD and the evidence of this version. 
 Result is `PASS`, `FAIL` or `NOT PROVEN`. Evidence must be a concrete pointer (test name, flow + screenshot, report line).
 
 Rows by the verifier agent on commit e645567 (REPORT.md Overall PASS: Jest 134/134, 13/13 flows, no crash, telemetry
-seen; DEVICE-CHECKS.md on the same build). The verifier returned 41 PASS, 1 NOT PROVEN (AC-01: the emulator is en-US,
+seen; DEVICE-CHECKS.md on the same build). Re-verified on commit 4eb0e52 (only change: three extra takeScreenshot
+steps readme-1-home, readme-2-draw, readme-3-check-win, needed by the release): REPORT.md Overall PASS, Jest 134/134,
+13/13 flows, no crash, telemetry seen; DEVICE-CHECKS.md (AC-01, AC-28, AC-35, AC-36, AC-45) re-run on that build with
+the same results. The verifier returned 41 PASS, 1 NOT PROVEN (AC-01: the emulator is en-US,
 so no e2e run showed the French consent), 3 PENDING RELEASE. AC-01 was then proven on the same build with the app's
 language set to fr-FR (DEVICE-CHECKS.md « AC-01 », `screens/device-fr-consent.png`); its row below is updated with
 that evidence. Summary: 42 PASS, 3 PENDING RELEASE, 0 NOT PROVEN, 0 FAIL. Verifier caveat (AC-29, AC-37):
-`raw/logcat-e2e.txt` only covers the last two flows; the "no crash" claim for the whole run rests on the crash buffer
+`raw/logcat-e2e.txt` only covers the end of the run (08:08:19-08:09:52 on 4eb0e52); the "no crash" claim for the whole run rests on the crash buffer
 read by verify.mjs (REPORT step 12). expo-doctor WARN affects no criterion.
 
 | AC | Criterion (short) | Proof type | Evidence | Result |
@@ -41,7 +44,7 @@ read by verify.mjs (REPORT step 12). expo-doctor WARN affects no criterion.
 | AC-26 | nothing sent when consent is refused or stats are turned off | unit | telemetry.test.ts "sends nothing without consent"; screens.test.tsx "AC-26: nothing is logged when consent is refused", "AC-26: nothing is logged once statistics are turned off in the settings"; jest PASS | PASS |
 | AC-27 | after consent, game_start, stage_won, game_end in logcat | device | REPORT.md step 13 PASS "seen in logcat: game_start, stage_won, game_end". raw/logcat-telemetry.txt FA-SVC "Logging event: origin=app,name=game_start", "name=stage_won ... choice=continue, balls=5.0, stage=quine", "name=game_end ... duration_min=1.0, result=stopped, stage=double_quine". Flow .maestro/telemetry-consent.yaml (consent-accept, quine validated, game ended); screens/telemetry-game-over.png | PASS |
 | AC-28 | no RECORD_AUDIO / AD_ID; arm64 APK < 40 MB | device | Permission part proven on this build: DEVICE-CHECKS.md AC-28 + raw/device-permissions.txt (INTERNET, VIBRATE, ACCESS_NETWORK_STATE, WAKE_LOCK, MODIFY_AUDIO_SETTINGS, DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION; no RECORD_AUDIO, no AD_ID). Size part not measurable yet: only the 80.8 MB universal APK exists; the arm64 APK is built by /release-apk | PENDING RELEASE |
-| AC-29 | cold start < 3 s; no FATAL EXCEPTION after the e2e flows | device | REPORT.md step 10 PASS "median 598 ms of 694 / 598 / 547 ms (target < 3000 ms)", step 9 "0 fatal log lines", step 12 PASS "0 fatal log lines (crash buffer + errors, raw/logcat-e2e.txt)"; grep FATAL raw/logcat-e2e.txt = 0. Caveat: raw/logcat-e2e.txt only covers 20:15:36-20:17:08, so for the earlier flows the "no crash" claim relies on the crash buffer read by the script | PASS |
+| AC-29 | cold start < 3 s; no FATAL EXCEPTION after the e2e flows | device | REPORT.md step 10 PASS "median 800 ms of 1813 / 800 / 780 ms (target < 3000 ms)" (4eb0e52), step 9 "0 fatal log lines", step 12 PASS "0 fatal log lines (crash buffer + errors, raw/logcat-e2e.txt)"; grep FATAL raw/logcat-e2e.txt = 0. Caveat: raw/logcat-e2e.txt only covers 08:08:19-08:09:52, so for the earlier flows the "no crash" claim relies on the crash buffer read by the script | PASS |
 | AC-30 | fr.ts and nicknames: no-break space before ! ? : ; and inside « » | unit | copy.test.ts "fr.ts strings use French typography" (more than 60 strings, typographyProblems = []); nicknames.test.ts "AC-30: announcements follow French typography"; jest PASS | PASS |
 | AC-31 | every nickname approved by the user, the English bingo calls too | manual | docs/NICKNAMES.md has a French table and a new "English: British bingo calls (v0.2.0)" section (user decision 2026-10-25), both with an "Approved" column; nicknames.test.ts "AC-31: the review sheet lists every nickname" and "the review sheet lists every call" PASS. The user's review of the English calls before release is still to be done | PENDING RELEASE |
 | AC-32 | on the user's phone: number readable, voice intelligible, screen on, polished | manual | needs the v0.2.0 phone test (/release-apk); nothing yet for this version | PENDING RELEASE |
