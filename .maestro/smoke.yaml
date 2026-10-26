@@ -20,6 +20,7 @@ tags:
     id: "home-screen"
 - assertVisible: "Nouvelle partie"
 - takeScreenshot: 02-home
+- takeScreenshot: readme-1-home
 - stopApp
 - launchApp
 - extendedWaitUntil:

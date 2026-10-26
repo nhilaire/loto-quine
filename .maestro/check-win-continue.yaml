@@ -71,6 +71,7 @@ tags:
     id: "check-verify"
 - assertVisible: "Gagné !"
 - takeScreenshot: 20-check-win
+- takeScreenshot: readme-3-check-win
 - tapOn:
     id: "check-validate"
 - assertVisible: "Continuer le tirage"

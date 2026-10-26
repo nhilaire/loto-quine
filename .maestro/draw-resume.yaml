@@ -49,6 +49,7 @@ tags:
     id: "board-cell-61"
     selected: false
 - takeScreenshot: 11-three-balls
+- takeScreenshot: readme-2-draw
 - stopApp
 - launchApp
 - extendedWaitUntil:
