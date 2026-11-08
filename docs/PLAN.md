@@ -29,7 +29,7 @@ Format: `- [ ] T-01 Title (AC-01, AC-02) - proof: unit|e2e|device`. Check the bo
 - [x] T-22 Maestro: flows pin French through the settings, new language flow with screenshots (AC-43) - proof: e2e
 - [x] T-23 v0.2.1 fix: card entry never makes a 3-digit cell when the cursor cell and the next one are full (AC-08) - proof: unit
 - [x] T-24 v0.2.1 fix: leaving Game during the roll settles the ball, so « Reprendre la partie » shows it without animation or voice (AC-12, AC-14) - proof: unit
-- [ ] T-25 v0.2.1 fix: a failed consent write is reported and the consent choice still closes the consent screen (AC-02) - proof: unit
+- [x] T-25 v0.2.1 fix: a failed consent write is reported and the consent choice still closes the consent screen (AC-02) - proof: unit
 
 ## Notes
 

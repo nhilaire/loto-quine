@@ -3,6 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react-native';
 import * as Speech from 'expo-speech';
 
 import App from '../App';
+import * as telemetry from '../telemetry/telemetry';
 import { APP_NAME } from '../config/app';
 import { deviceLanguageTags } from '../i18n/deviceLocale';
 
@@ -32,6 +33,22 @@ describe('App', () => {
     await fireEvent.press(await screen.findByTestId('home-resume'));
     expect(await screen.findByText('Boule n°1')).toBeTruthy();
     expect(Speech.speak).not.toHaveBeenCalled();
+  });
+
+  it('closes the consent screen even when saving the choice fails (AC-02)', async () => {
+    // The storage mock's setItem is already a jest.fn: a one-shot rejection, no restore (it would drop its implementation).
+    jest.mocked(AsyncStorage.setItem).mockRejectedValueOnce(new Error('disk full'));
+    await render(<App />);
+    await fireEvent.press(await screen.findByText('Refuser'));
+    expect(await screen.findByText('Nouvelle partie')).toBeTruthy();
+  });
+
+  it('closes the consent screen even when applying the choice throws (AC-02)', async () => {
+    const apply = jest.spyOn(telemetry, 'applyConsent').mockRejectedValueOnce(new Error('native module'));
+    await render(<App />);
+    await fireEvent.press(await screen.findByText('Accepter'));
+    expect(await screen.findByText('Nouvelle partie')).toBeTruthy();
+    apply.mockRestore();
   });
 
   it('does not ask again once the player has chosen', async () => {

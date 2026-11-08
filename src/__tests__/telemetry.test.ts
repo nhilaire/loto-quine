@@ -1,6 +1,9 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { logEvent, setConsent } from '@react-native-firebase/analytics';
+import { recordError } from '@react-native-firebase/crashlytics';
 
 import { sanitizeParams } from '../telemetry/events';
+import { saveConsent } from '../telemetry/consentStore';
 import { applyConsent, track } from '../telemetry/telemetry';
 
 describe('sanitizeParams', () => {
@@ -30,5 +33,16 @@ describe('telemetry consent', () => {
     track('stage_won', { stage: 'quine', balls: 23, choice: 'continue' });
     expect(logEvent).toHaveBeenCalledWith(expect.anything(), 'stage_won', { stage: 'quine', balls: 23, choice: 'continue' });
     expect(setConsent).toHaveBeenCalledWith(expect.anything(), expect.objectContaining({ analytics_storage: true, ad_storage: false }));
+  });
+});
+
+describe('consent store (AC-02)', () => {
+  beforeEach(() => jest.clearAllMocks());
+
+  it('reports a failed consent write instead of throwing', async () => {
+    await applyConsent(true);
+    jest.mocked(AsyncStorage.setItem).mockRejectedValueOnce(new Error('disk full'));
+    await expect(saveConsent('granted')).resolves.toBeUndefined();
+    expect(recordError).toHaveBeenCalledWith(expect.anything(), expect.objectContaining({ message: 'disk full' }));
   });
 });

@@ -21,7 +21,7 @@ import { loadGame, saveGame } from './storage/gameStore';
 import { loadLanguageSetting, saveLanguageSetting } from './storage/languageSetting';
 import { DEFAULT_SETTINGS, SettingKey, Settings, loadSettings, saveSettings } from './storage/settings';
 import { Consent, loadConsent, saveConsent } from './telemetry/consentStore';
-import { applyConsent, track } from './telemetry/telemetry';
+import { applyConsent, reportError, track } from './telemetry/telemetry';
 import { Button } from './ui/Button';
 import { Dialog } from './ui/Dialog';
 import { ErrorBoundary } from './ui/ErrorBoundary';
@@ -142,11 +142,17 @@ export default function App() {
     setRoute('game');
   }, [commit]);
 
+  // The choice always takes effect on screen, even if saving or applying it fails.
   const decide = useCallback(async (granted: boolean) => {
     const value = granted ? 'granted' : 'denied';
-    await saveConsent(value);
-    await applyConsent(granted);
-    setConsentState(value);
+    try {
+      await saveConsent(value);
+      await applyConsent(granted);
+    } catch (error) {
+      reportError(error, 'apply_consent');
+    } finally {
+      setConsentState(value);
+    }
   }, []);
 
   // The switch is immediate (context), then saved; the game in progress is not touched.
