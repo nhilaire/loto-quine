@@ -1,5 +1,5 @@
 import { BALL_COUNT } from '../game/draw';
-import { GameAction, GameState, canDraw, durationMinutes, lastBall, newGame, reduce } from '../game/game';
+import { GameAction, GameState, canDraw, durationMinutes, lastBall, newGame, reduce, settle } from '../game/game';
 import { seedFrom } from '../game/random';
 
 const T0 = 1_700_000_000_000;
@@ -86,5 +86,20 @@ describe('game flow (AC-06, AC-09, AC-10, AC-11, AC-33)', () => {
     expect(won.stage).toBe('quine');
     expect(play(won, { type: 'validateWin', now: T0 })).toBe(won);
     expect(play(won, { type: 'choose', choice: 'continue' }).stage).toBe('double_quine');
+  });
+});
+
+describe('leaving the game screen during the roll (AC-12, AC-14)', () => {
+  it('settles a rolling ball: drawn, no longer animating, nothing else changed', () => {
+    const rolling = reduce(newGame(seedFrom(42), 0), { type: 'draw' });
+    expect(rolling.animating).toBe(true);
+    const settled = settle(rolling);
+    expect(settled).toEqual({ ...rolling, animating: false });
+    expect(canDraw(settled)).toBe(true);
+  });
+
+  it('leaves a game that is not rolling untouched', () => {
+    const game = reduce(reduce(newGame(seedFrom(42), 0), { type: 'draw' }), { type: 'revealed' });
+    expect(settle(game)).toBe(game);
   });
 });

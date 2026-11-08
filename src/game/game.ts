@@ -92,6 +92,12 @@ export function reduce(state: GameState, action: GameAction): GameState {
   }
 }
 
+// The game as it is when the host leaves the Game screen during the roll: the ball stays drawn and is shown on return
+// without animation or voice, exactly as after a cold start (parseGame).
+export function settle(state: GameState): GameState {
+  return state.animating ? { ...state, animating: false } : state;
+}
+
 // Whole minutes from start to end (or to `now` while playing), rounded down.
 export function durationMinutes(state: GameState, now: number): number {
   const end = state.endedAt ?? now;

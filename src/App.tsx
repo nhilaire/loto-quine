@@ -4,7 +4,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { parseSeedLink, setPendingStart, takePendingStart } from './app/testSeed';
 import { onReveal, onRollStart, onTieReveal, onWinValidated, stopAnnouncements } from './audio/feedback';
-import { GameAction, GameState, WinChoice, lastBall, newGame, reduce } from './game/game';
+import { GameAction, GameState, WinChoice, lastBall, newGame, reduce, settle } from './game/game';
 import { randomSeed, seedFrom } from './game/random';
 import { TrackCall, startEvents, transitionEvents } from './game/telemetryRules';
 import { Language, LanguageSetting } from './i18n';
@@ -88,17 +88,6 @@ export default function App() {
     return () => sub.remove();
   }, []);
 
-  useEffect(() => {
-    const sub = BackHandler.addEventListener('hardwareBackPress', () => {
-      const target = BACK[route];
-      if (!target) return false;
-      if (route === 'game') stopAnnouncements();
-      setRoute(target);
-      return true;
-    });
-    return () => sub.remove();
-  }, [route]);
-
   // Every state change is saved at once: a ball is saved when it is drawn, before its animation.
   const commit = useCallback((next: GameState) => {
     gameRef.current = next.status === 'playing' ? next : null;
@@ -106,6 +95,25 @@ export default function App() {
     if (next.status === 'finished') setFinished(next);
     void saveGame(next);
   }, []);
+
+  // Leaving Game during the roll settles the ball: « Reprendre la partie » shows it without animation or voice.
+  const leaveGame = useCallback(() => {
+    stopAnnouncements();
+    const current = gameRef.current;
+    if (current?.animating) commit(settle(current));
+    setRoute('home');
+  }, [commit]);
+
+  useEffect(() => {
+    const sub = BackHandler.addEventListener('hardwareBackPress', () => {
+      const target = BACK[route];
+      if (!target) return false;
+      if (route === 'game') leaveGame();
+      else setRoute(target);
+      return true;
+    });
+    return () => sub.remove();
+  }, [route, leaveGame]);
 
   const dispatch = useCallback(
     (action: GameAction): GameState | null => {
@@ -199,10 +207,7 @@ export default function App() {
         onDraw={draw}
         onRevealed={revealed}
         onCheck={() => setRoute('check')}
-        onHome={() => {
-          stopAnnouncements();
-          setRoute('home');
-        }}
+        onHome={leaveGame}
         onEnd={() => setConfirm('end')}
         onChoose={choose}
       />

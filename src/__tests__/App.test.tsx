@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { fireEvent, render, screen } from '@testing-library/react-native';
+import * as Speech from 'expo-speech';
 
 import App from '../App';
 import { APP_NAME } from '../config/app';
@@ -19,6 +20,18 @@ describe('App', () => {
     await fireEvent.press(screen.getByText('Refuser'));
     expect(await screen.findByText('Nouvelle partie')).toBeTruthy();
     expect(screen.getByText(APP_NAME)).toBeTruthy();
+  });
+
+  it('resuming a game left during the roll shows the ball without replaying the roll or the voice (AC-14)', async () => {
+    await AsyncStorage.setItem('telemetry.consent.v1', 'denied');
+    await render(<App />);
+    await fireEvent.press(await screen.findByTestId('home-new-game'));
+    await fireEvent.press(await screen.findByTestId('game-draw'));
+    jest.mocked(Speech.speak).mockClear();
+    await fireEvent.press(screen.getByTestId('game-home'));
+    await fireEvent.press(await screen.findByTestId('home-resume'));
+    expect(await screen.findByText('Boule n°1')).toBeTruthy();
+    expect(Speech.speak).not.toHaveBeenCalled();
   });
 
   it('does not ask again once the player has chosen', async () => {
