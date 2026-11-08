@@ -30,12 +30,14 @@ export function previousCell(c: Cursor): Cursor {
 }
 
 // Appends a digit to the current cell; after 2 digits the cursor moves to the next cell. When the current cell is
-// already full the digit goes into the next cell (ignored on the last cell).
+// already full the digit goes into the next cell; it is ignored on the last cell or when the next cell is full too
+// (a cell never holds more than 2 digits).
 export function typeDigit(card: CardEntry, cursor: Cursor, digit: number): { card: CardEntry; cursor: Cursor } {
   let c = cursor;
   if (card[c.row][c.col].length >= MAX_DIGITS) {
     if (index(c) === LAST) return { card, cursor: c };
     c = nextCell(c);
+    if (card[c.row][c.col].length >= MAX_DIGITS) return { card, cursor };
   }
   const value = card[c.row][c.col] + String(digit);
   const updated = setCell(card, c, value);

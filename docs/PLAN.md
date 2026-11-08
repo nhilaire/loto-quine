@@ -27,7 +27,7 @@ Format: `- [ ] T-01 Title (AC-01, AC-02) - proof: unit|e2e|device`. Check the bo
 - [x] T-20 English dictionary and English bingo calls; announcements and voice language per game language (fr-FR / en-GB) (AC-21, AC-23, AC-44) - proof: unit
 - [x] T-21 Screens read the current language (useI18n), Settings language choice, App wiring, launcher name per language in app.config.js (AC-42, AC-43, AC-45) - proof: unit
 - [x] T-22 Maestro: flows pin French through the settings, new language flow with screenshots (AC-43) - proof: e2e
-- [ ] T-23 v0.2.1 fix: card entry never makes a 3-digit cell when the cursor cell and the next one are full (AC-08) - proof: unit
+- [x] T-23 v0.2.1 fix: card entry never makes a 3-digit cell when the cursor cell and the next one are full (AC-08) - proof: unit
 - [ ] T-24 v0.2.1 fix: leaving Game during the roll settles the ball, so « Reprendre la partie » shows it without animation or voice (AC-12, AC-14) - proof: unit
 - [ ] T-25 v0.2.1 fix: a failed consent write is reported and the consent choice still closes the consent screen (AC-02) - proof: unit
 

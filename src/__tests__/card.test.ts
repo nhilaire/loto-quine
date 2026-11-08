@@ -102,4 +102,23 @@ describe('keypad entry', () => {
     const same = typeDigit(s.card, s.cursor, 1);
     expect(same.card[2][4]).toBe('89');
   });
+
+  it('never makes a 3-digit cell when the cell after a full cursor cell is also full (middle cell)', () => {
+    const full = card(['12', '34', '56', '78', '90']);
+    const s = typeDigit(full, { row: 0, col: 1 }, 4);
+    expect(s.card).toEqual(full);
+    expect(s.card.flat().every((cell) => cell.length <= 2)).toBe(true);
+  });
+
+  it('never makes a 3-digit cell when the cell after a full cursor cell is also full (first cell)', () => {
+    const full = card(['12', '34', '', '', '']);
+    const s = typeDigit(full, { row: 0, col: 0 }, 7);
+    expect(s.card).toEqual(full);
+  });
+
+  it('still puts the digit in the next cell when it has room', () => {
+    const s = typeDigit(card(['12', '3', '', '', '']), { row: 0, col: 0 }, 4);
+    expect(s.card[0][1]).toBe('34');
+    expect(s.cursor).toEqual({ row: 0, col: 2 });
+  });
 });
