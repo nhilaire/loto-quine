@@ -21,9 +21,9 @@ tags:
 - assertVisible: "Un mot de l'auteur"
 - takeScreenshot: 85-about
 - scrollUntilVisible:
-    element: "Version 0.2.0"
+    element: "Version 0.2.1"
     timeout: 20000
-- assertVisible: "Version 0.2.0"
+- assertVisible: "Version 0.2.1"
 - takeScreenshot: 86-about-end
 - tapOn:
     id: "about-back"
