@@ -1,6 +1,6 @@
 // Short confetti burst (about 1.6 s) when a winner is validated. Purely decorative.
-import { useEffect, useRef } from 'react';
-import { Animated, Easing, StyleSheet, View, useWindowDimensions } from 'react-native';
+import { useEffect, useState } from 'react';
+import { Animated, Easing, StyleSheet, View, useAnimatedValue, useWindowDimensions } from 'react-native';
 
 import { ballColor } from './theme';
 
@@ -8,8 +8,8 @@ const PIECES = 28;
 
 export function Confetti() {
   const { width, height } = useWindowDimensions();
-  const progress = useRef(new Animated.Value(0)).current;
-  const pieces = useRef(
+  const progress = useAnimatedValue(0);
+  const [pieces] = useState(() =>
     Array.from({ length: PIECES }, (_, i) => ({
       x: ((i * 37) % 100) / 100,
       drift: ((i * 53) % 41) - 20,
@@ -17,7 +17,7 @@ export function Confetti() {
       color: ballColor((i * 11) % 90),
       spin: i % 2 === 0 ? 1 : -1,
     })),
-  ).current;
+  );
 
   useEffect(() => {
     Animated.timing(progress, { toValue: 1, duration: 1600, easing: Easing.out(Easing.quad), useNativeDriver: true }).start();

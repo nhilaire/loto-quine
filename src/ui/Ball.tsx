@@ -1,7 +1,7 @@
 // The loto ball: glossy coloured sphere with a white disc and the number. While rolling it shakes and cycles
 // through the ball colours; at reveal it pops in with the number.
-import { useEffect, useRef, useState } from 'react';
-import { Animated, Easing, StyleSheet, Text, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { Animated, Easing, StyleSheet, Text, View, useAnimatedValue } from 'react-native';
 
 import { ballColor, colors } from './theme';
 
@@ -10,8 +10,8 @@ type Props = { number: number | null; rolling: boolean; size: number; testID?: s
 const ROLL_COLORS = [5, 15, 25, 35, 45, 55, 65, 75, 85];
 
 export function Ball({ number, rolling, size, testID, accessibilityLabel }: Props) {
-  const shake = useRef(new Animated.Value(0)).current;
-  const pop = useRef(new Animated.Value(1)).current;
+  const shake = useAnimatedValue(0);
+  const pop = useAnimatedValue(1);
   const [colorIndex, setColorIndex] = useState(0);
 
   // Finite on purpose (4 shakes of 280 ms, 12 colour steps): the roll lasts about as long as ROLL_MS and never

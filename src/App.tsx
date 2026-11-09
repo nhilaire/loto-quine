@@ -45,10 +45,15 @@ export default function App() {
   const [route, setRoute] = useState<Route>('home');
   const [game, setGame] = useState<GameState | null>(null);
   const [finished, setFinished] = useState<GameState | null>(null);
+  // Clock reading taken when the game finished (fallback of durationMinutes: a finished game has `endedAt`).
+  const [finishedAt, setFinishedAt] = useState(0);
   const [confirm, setConfirm] = useState<Confirm>(null);
   const gameRef = useRef<GameState | null>(null);
+  // Latest settings for the audio callbacks (read only from event handlers, so an effect is early enough).
   const settingsRef = useRef(settings);
-  settingsRef.current = settings;
+  useEffect(() => {
+    settingsRef.current = settings;
+  });
   // The language resolved by I18nProvider (below this component), for the voice.
   const languageRef = useRef<Language>('fr');
 
@@ -92,7 +97,10 @@ export default function App() {
   const commit = useCallback((next: GameState) => {
     gameRef.current = next.status === 'playing' ? next : null;
     setGame(gameRef.current);
-    if (next.status === 'finished') setFinished(next);
+    if (next.status === 'finished') {
+      setFinished(next);
+      setFinishedAt(Date.now());
+    }
     void saveGame(next);
   }, []);
 
@@ -228,7 +236,7 @@ export default function App() {
       />
     );
   } else if (route === 'over' && finished) {
-    content = <GameOverScreen game={finished} now={Date.now()} onNewGame={startGame} onHome={() => setRoute('home')} />;
+    content = <GameOverScreen game={finished} now={finishedAt} onNewGame={startGame} onHome={() => setRoute('home')} />;
   } else if (route === 'about') {
     content = <AboutScreen onBack={() => setRoute('home')} />;
   } else if (route === 'rules') {
@@ -271,7 +279,10 @@ export default function App() {
 
 // Keeps the current language available to the callbacks of App (voice announcements).
 function LanguageTracker({ languageRef }: { languageRef: React.MutableRefObject<Language> }) {
-  languageRef.current = useI18n().language;
+  const { language } = useI18n();
+  useEffect(() => {
+    languageRef.current = language;
+  }, [language, languageRef]);
   return null;
 }
 
